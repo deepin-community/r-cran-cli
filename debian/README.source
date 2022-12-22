@@ -1,0 +1,7 @@
+Explanation for binary files inside source package according to
+  http://lists.debian.org/debian-devel/2013/09/msg00332.html
+
+Files: R/sysdata.rda
+  Data dump of running R session.
+
+ -- Andreas Tille <tille@debian.org>  Fri, 12 Jan 2018 12:20:19 +0100

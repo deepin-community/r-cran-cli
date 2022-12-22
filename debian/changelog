@@ -1,0 +1,100 @@
+r-cran-cli (3.1.0-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 3.1.0
+  * Run cme, dh-update-R
+
+ -- Nilesh Patra <nilesh@debian.org>  Mon, 01 Nov 2021 21:54:15 +0530
+
+r-cran-cli (3.0.1-1) unstable; urgency=medium
+
+  * New upstream version
+  * Architecture: any
+
+ -- Andreas Tille <tille@debian.org>  Tue, 17 Aug 2021 08:04:05 +0200
+
+r-cran-cli (2.3.0-1) unstable; urgency=medium
+
+  * New upstream version
+
+ -- Andreas Tille <tille@debian.org>  Thu, 04 Feb 2021 14:36:22 +0100
+
+r-cran-cli (2.2.0-1) unstable; urgency=medium
+
+  * New upstream version
+  * Standards-Version: 4.5.1 (routine-update)
+
+ -- Andreas Tille <tille@debian.org>  Fri, 27 Nov 2020 11:36:11 +0100
+
+r-cran-cli (2.1.0-1) unstable; urgency=medium
+
+  * New upstream version
+  * debhelper-compat 13 (routine-update)
+  * Testsuite: autopkgtest-pkg-r (routine-update)
+
+ -- Andreas Tille <tille@debian.org>  Thu, 15 Oct 2020 11:35:01 +0200
+
+r-cran-cli (2.0.2-2) unstable; urgency=medium
+
+  * Add salsa-ci file (routine-update)
+  * Rules-Requires-Root: no (routine-update)
+
+ -- Andreas Tille <tille@debian.org>  Sat, 16 May 2020 15:59:19 +0200
+
+r-cran-cli (2.0.2-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version
+  * Standards-Version: 4.5.0
+
+ -- Dylan Aïssi <daissi@debian.org>  Wed, 04 Mar 2020 08:44:11 +0100
+
+r-cran-cli (2.0.1-1) unstable; urgency=medium
+
+  * New upstream version
+  * Set upstream metadata fields: Archive, Bug-Database, Bug-Submit,
+    Repository, Repository-Browse.
+  * Locale C.UTF-8 instead of C in autopkgtest
+
+ -- Andreas Tille <tille@debian.org>  Sun, 12 Jan 2020 22:03:01 +0100
+
+r-cran-cli (2.0.0-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version
+  * debhelper-compat 12
+  * Standards-Version: 4.4.1
+  * Trim trailing whitespace.
+
+ -- Dylan Aïssi <daissi@debian.org>  Mon, 30 Dec 2019 22:27:14 +0100
+
+r-cran-cli (1.1.0-1) unstable; urgency=medium
+
+  * New upstream version
+  * debhelper 12
+  * Standards-Version: 4.3.0
+
+ -- Andreas Tille <tille@debian.org>  Mon, 08 Jul 2019 08:43:21 +0200
+
+r-cran-cli (1.0.1-1) unstable; urgency=medium
+
+  * New upstream version
+  * Standards-Version: 4.2.1
+
+ -- Andreas Tille <tille@debian.org>  Fri, 28 Sep 2018 21:35:30 +0200
+
+r-cran-cli (1.0.0-2) unstable; urgency=medium
+
+  * Rebuild for R 3.5 transition
+  * Maintainer: Debian R Packages Maintainers <r-pkg-team@alioth-
+    lists.debian.net>
+  * Point Vcs fields to salsa.debian.org
+  * dh-update-R to update Build-Depends
+
+ -- Andreas Tille <tille@debian.org>  Fri, 01 Jun 2018 07:23:09 +0200
+
+r-cran-cli (1.0.0-1) unstable; urgency=medium
+
+  * Initial release (closes: #887090)
+
+ -- Andreas Tille <tille@debian.org>  Sat, 13 Jan 2018 19:33:35 +0100

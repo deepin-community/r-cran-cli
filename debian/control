@@ -1,0 +1,27 @@
+Source: r-cran-cli
+Maintainer: Debian R Packages Maintainers <r-pkg-team@alioth-lists.debian.net>
+Uploaders: Andreas Tille <tille@debian.org>
+Section: gnu-r
+Testsuite: autopkgtest-pkg-r
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+               dh-r,
+               r-base-dev,
+               r-cran-glue
+Standards-Version: 4.6.0
+Vcs-Browser: https://salsa.debian.org/r-pkg-team/r-cran-cli
+Vcs-Git: https://salsa.debian.org/r-pkg-team/r-cran-cli.git
+Homepage: https://cran.r-project.org/package=cli
+Rules-Requires-Root: no
+
+Package: r-cran-cli
+Architecture: any
+Depends: ${R:Depends},
+         ${shlibs:Depends},
+         ${misc:Depends}
+Recommends: ${R:Recommends}
+Suggests: ${R:Suggests}
+Description: GNU R helpers for developing command line interfaces
+ A suite of tools designed to build attractive command line
+ interfaces ('CLIs'). Includes tools for drawing rules, boxes, trees, and
+ 'Unicode' symbols with 'ASCII' alternatives.
