@@ -149,7 +149,9 @@ updates an existing progress bar, and \code{cli_progress_done()} terminates
 it.
 
 It is good practice to always set the \code{name} argument, to make the
-progress bar more informative.\if{html}{\out{<div class="sourceCode r">}}\preformatted{clean <- function() \{
+progress bar more informative.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{clean <- function() \{
   cli_progress_bar("Cleaning data", total = 100)
   for (i in 1:100) \{
     Sys.sleep(5/100)
@@ -165,7 +167,9 @@ clean()
 
 \subsection{Progress bar types}{
 
-There are three builtin types of progress bars, and a custom type.\if{html}{\out{<div class="sourceCode r">}}\preformatted{tasks <- function() \{
+There are three builtin types of progress bars, and a custom type.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{tasks <- function() \{
   cli_progress_bar("Tasks", total = 3, type = "tasks")
   for (i in 1:3) \{
     Sys.sleep(1)
@@ -183,7 +187,9 @@ tasks()
 
 If \code{total} is not known, then cli shows a different progress bar.
 Note that you can also set \code{total} in \code{cli_progress_update()}, if it
-not known when the progress bar is created, but you learn it later.\if{html}{\out{<div class="sourceCode r">}}\preformatted{nototal <- function() \{
+not known when the progress bar is created, but you learn it later.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{nototal <- function() \{
   cli_progress_bar("Parameter tuning")
   for (i in 1:100) \{
     Sys.sleep(3/100)
@@ -207,7 +213,9 @@ global option (see \link{cli-config}) to change this.
 (In the cli documentation we usually set \code{cli.progress_clear} to \code{FALSE},
 so users can see how finished progress bars look.)
 
-In this example the first progress bar is cleared, the second is not.\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+In this example the first progress bar is cleared, the second is not.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_progress_bar("Data cleaning", total = 100, clear = TRUE)
   for (i in 1:100) \{
     Sys.sleep(3/100)
@@ -229,13 +237,17 @@ fun()
 
 Updating a progress bar on the screen is costly, so cli tries to avoid
 it for quick loops. By default a progress bar is only shown after two
-seconds. You can change this default with the \code{cli.progress_show_after}
-global option (see \link{cli-config}).
+seconds, or after half of that if less than 50\% of the iterations are
+complete. You can change the two second default with the
+\code{cli.progress_show_after} global option (see \link{cli-config}).
 
 (In the cli documentation we usually set \code{cli.progress_show_after} to
 \code{0} (zero seconds), so progress bars are shown immediately.)
 
-In this example we only show the progress bar after two seconds.\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+In this example we only show the progress bar after one second, because
+more than 50\% of the iterations remain after one second.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_alert("Starting now, at \{Sys.time()\}")
   cli_progress_bar(
     total = 100,
@@ -265,7 +277,9 @@ new one is created, then the previous one (if any) is automatically
 terminated. The current progress bar is also terminated when the function
 that created it exits. Thanks to these rules, most often you don't need
 to explicitly deal with progress bar ids, and you don't need to
-explicitly call \code{cli_progress_done()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+explicitly call \code{cli_progress_done()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_progress_bar("First step ", total = 100)
   for (i in 1:100) \{
     Sys.sleep(2/100)
@@ -288,7 +302,9 @@ fun()
 cli allows emitting regular cli output (alerts, headers, lists, etc.)
 while a progress bar is active. On terminals that support this, cli
 will remove the progress bar temporarily, emit the output, and then
-restores the progress bar.\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+restores the progress bar.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_alert_info("Before the progress bar")
   cli_progress_bar("Calculating", total = 100)
   for (i in 1:50) \{
@@ -319,7 +335,9 @@ In addition to the builtin types, you can also specify a custom
 format string. In this case \link[=progress-variables]{progress variables}
 are probably useful to avoid calculating some progress bar quantities
 like the elapsed time, of the ETA manually. You can also use your own
-variables in the calling function:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function(urls) \{
+variables in the calling function:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function(urls) \{
   cli_progress_bar(
     format = paste0(
       "\{pb_spin\} Downloading \{.path \{basename(url)\}\} ",
@@ -343,6 +361,43 @@ fun(paste0("https://acme.com/data-", 1:10, ".zip"))
 }
 }
 \seealso{
+These functions support \link[=inline-markup]{inline markup}.
+
 \code{\link[=cli_progress_message]{cli_progress_message()}} and \code{\link[=cli_progress_step]{cli_progress_step()}} for simpler
 progress messages.
+
+Other progress bar functions: 
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_builtin_handlers}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_num}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_progress_styles}()},
+\code{\link{progress-variables}}
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
 }
+\concept{functions supporting inline markup}
+\concept{progress bar functions}

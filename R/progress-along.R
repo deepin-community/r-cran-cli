@@ -21,7 +21,10 @@
 #'
 #' A complete example:
 #'
-#' ```{asciicast progress-along-1, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-along-1}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciciast_cursor = FALSE
 #' clifun <- function() {
 #'   for (i in cli_progress_along(1:100, "Downloading")) {
 #'      Sys.sleep(4/100)
@@ -40,7 +43,10 @@
 #'
 #' A complete example:
 #'
-#' ```{asciicast progress-along-2, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-along-2}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' res <- lapply(cli_progress_along(1:100, "Downloading"), function(i) {
 #'   Sys.sleep(4/100)
 #' })
@@ -48,7 +54,10 @@
 #'
 #' ## Custom format string
 #'
-#' ```{asciicast progress-along-3, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-along-3}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' clifun <- function() {
 #'   for (i in cli_progress_along(1:100,
 #'       format = "Downloading data file {cli::pb_current}")) {
@@ -82,8 +91,10 @@
 #' @return An index vector from 1 to `length(x)` that triggers progress
 #' updates as you iterate over it.
 #'
+#' @seealso This function supports [inline markup][inline-markup].
 #' @seealso [cli_progress_bar()] and the traditional progress bar API.
-#'
+#' @family progress bar functions
+#' @family functions supporting inline markup
 #' @export
 
 cli_progress_along <- function(x,

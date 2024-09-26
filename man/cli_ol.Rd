@@ -40,16 +40,25 @@ The id of the new container element, invisibly.
 An ordered list is a container, see \link{containers}.
 }
 \details{
-\subsection{Adding all items at once}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+\subsection{Adding all items at once}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_ol(c("one", "two", "three"))
 \}
 fun()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> 1. one                                                                          
+#> 2. two                                                                          
+#> 3. three                                                                        
+</pre></div>
+}}
 
-\if{html}{\figure{cli-ol.svg}}
 }
 
-\subsection{Adding items one by one}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{## Adding items one by one
+\subsection{Adding items one by one}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{## Adding items one by one
 fun <- function() \{
   cli_ol()
   cli_li("\{.emph one\}")
@@ -58,12 +67,19 @@ fun <- function() \{
   cli_end()
 \}
 fun()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> 1. <span style="font-style: italic;">one</span>                                                                          
+#> 2. <span style="font-style: italic;">two</span>                                                                          
+#> 3. <span style="font-style: italic;">three</span>                                                                        
+</pre></div>
+}}
 
-\if{html}{\figure{cli-ol-2.svg}}
 }
 
-\subsection{Nested lists}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+\subsection{Nested lists}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_div(theme = list(ol = list("margin-left" = 2)))
   cli_ul()
   cli_li("one")
@@ -73,8 +89,42 @@ fun()
   cli_end()
 \}
 fun()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> • one                                                                           
+#>     1. foo                                                                      
+#>     2. bar                                                                      
+#>     3. foobar                                                                   
+#> • two                                                                           
+</pre></div>
+}}
 
-\if{html}{\figure{cli-ol-3.svg}}
 }
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}

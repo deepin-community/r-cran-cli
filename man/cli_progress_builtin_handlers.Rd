@@ -54,7 +54,7 @@ progress bars. This handler is always able to handle all progress bars.
 
 \subsection{\code{rstudio}}{
 
-Use \href{https://blog.rstudio.com/2019/03/14/rstudio-1-2-jobs/}{RStudio's job panel}
+Use \href{https://posit.co/blog/rstudio-1-2-jobs/}{RStudio's job panel}
 to show the progress bars. This handler is available at the RStudio console,
 in recent versions of RStudio.
 }
@@ -79,8 +79,20 @@ calling the external command.
 
 \subsection{\code{shiny}}{
 
-Use \link[shiny:Progress]{shiny's progress bars}. This handler is available if a
-shiny app is running.
+Use \href{https://shiny.rstudio.com/articles/progress.html}{shiny's progress bars}.
+This handler is available if a shiny app is running.
 }
 }
 
+\seealso{
+Other progress bar functions: 
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_num}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_progress_styles}()},
+\code{\link{progress-variables}}
+}
+\concept{progress bar functions}

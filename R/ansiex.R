@@ -1,8 +1,19 @@
-
+#' Labels a character vector as containing ANSI control codes.
+#'
+#' This function sets the class of its argument, activating
+#' ANSI-string-specific methods such as for printing.
+#'
+#' @param x A character vector or something that can be
+#'   coerced into one.
+#' @return A `cli_ansi_string` object, a subclass of
+#'   `character`, with the same length and contents
+#'   as `x`.
+#' @family low level ANSI functions
+#' @export
 ansi_string <- function(x) {
   if (!is.character(x)) x <- as.character(x)
   x <- enc2utf8(x)
-  class(x) <- unique(c("ansi_string", class(x), "character"))
+  class(x) <- unique(c("cli_ansi_string", "ansi_string", class(x), "character"))
   x
 }
 
@@ -23,7 +34,8 @@ ansi_regex <- function() {
     "(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])",
     "|\\x{001b}[A-M]",
     # this is for hyperlinks, we must be non-greedy
-    "|\\x{001b}\\]8;;.*?\\x{0007}"
+    "|\\x{001b}\\]8;.*?;.*?\\x{001b}\\\\",
+    "|\\x{001b}\\]8;.*?;.*?\\x{0007}"
   )
 }
 
@@ -33,6 +45,7 @@ ansi_regex <- function() {
 #'   vector.
 #' @param sgr Whether to look for SGR (styling) control sequences.
 #' @param csi Whether to look for non-SGR control sequences.
+#' @param link Whether to look for ANSI hyperlinks.
 #' @return Logical vector, `TRUE` for the strings that have some
 #'   ANSI styling.
 #'
@@ -43,41 +56,44 @@ ansi_regex <- function() {
 #' ansi_has_any("foobar")
 #' ansi_has_any(col_red("foobar"))
 
-ansi_has_any <- function(string, sgr = TRUE, csi = TRUE) {
+ansi_has_any <- function(string, sgr = TRUE, csi = TRUE, link = TRUE) {
   if (!is.character(string)) string <- as.character(string)
   string <- enc2utf8(string)
   stopifnot(
     is_flag(sgr),
-    is_flag(csi)
+    is_flag(csi),
+    is_flag(link)
   )
-  .Call(clic_ansi_has_any, string, sgr, csi)
+  .Call(clic_ansi_has_any, string, sgr, csi, link)
 }
 
 #' Remove ANSI escape sequences from a string
 #'
-#' The input may be of class `ansi_string` class, this is also dropped
+#' The input may be of class `cli_ansi_string` class, this is also dropped
 #' from the result.
 #'
 #' @param string The input string.
 #' @param sgr Whether to remove for SGR (styling) control sequences.
 #' @param csi Whether to remove for non-SGR control sequences.
+#' @param link Whether to remove ANSI hyperlinks.
 #' @return The cleaned up string. Note that `ansi_strip()` always drops
-#' the `ansi_string` class, even if `sgr` and sci` are `FALSE`.
+#' the `cli_ansi_string` class, even if `sgr` and sci` are `FALSE`.
 #'
 #' @family low level ANSI functions
 #' @export
 #' @examples
 #' ansi_strip(col_red("foobar")) == "foobar"
 
-ansi_strip <- function(string, sgr = TRUE, csi = TRUE) {
+ansi_strip <- function(string, sgr = TRUE, csi = TRUE, link = TRUE) {
   if (!is.character(string)) string <- as.character(string)
   string <- enc2utf8(string)
   stopifnot(
     is_flag(sgr),
-    is_flag(csi)
+    is_flag(csi),
+    is_flag(link)
   )
-  clean <- .Call(clic_ansi_strip, string, sgr, csi)
-  class(clean) <- setdiff(class(clean), "ansi_string")
+  clean <- .Call(clic_ansi_strip, string, sgr, csi, link)
+  class(clean) <- setdiff(class(clean), c("cli_ansi_string", "ansi_string"))
   clean
 }
 
@@ -89,7 +105,7 @@ ansi_strip <- function(string, sgr = TRUE, csi = TRUE) {
 #' @param x Character vector, potentially ANSI styled, or a vector to be
 #'   coerced to character. If it converted to UTF-8.
 #' @param type Whether to count graphemes (characters), code points,
-#'   bytes, or calculate the display width of the string. 
+#'   bytes, or calculate the display width of the string.
 #' @return Numeric vector, the length of the strings in the character
 #'   vector.
 #'
@@ -165,13 +181,27 @@ ansi_nchar <- function(x,
 ansi_substr <- function(x, start, stop) {
   if (!is.character(x)) x <- as.character(x)
   if (!length(x)) return(ansi_string(x))
-  start <- as.integer(start)
-  stop <- as.integer(stop)
+  start <- suppressWarnings(as.integer(start))
+  stop <- suppressWarnings(as.integer(stop))
   if (!length(start) || !length(stop)) {
-    stop("invalid substring arguments")
+    throw(cli_error(
+      "{.code ansi_substr()} must have non-empty {.arg start} and {.arg stop} arguments",
+      "i" = if (!length(start)) "{.arg start} has length {length(start)}",
+      "i" = if (!length(stop)) "{.arg stop} has length {length(stop)}"
+    ))
   }
-  if (anyNA(start) || anyNA(stop)) {
-    stop("non-numeric substring arguments not supported")
+  nastart <- anyNA(start)
+  nastop <- anyNA(stop)
+  if (nastart || nastop) {
+    throw(cli_error(
+      "{.arg start} and {.arg stop} must not have {.code NA} values",
+      "i" = if (nastart) paste(
+              "{.arg start} has {sum(is.na(start))}",
+              "{.code NA} value{?s}, after coercion to integer"),
+      "i" = if (nastop) paste(
+              "{.arg stop} has {sum(is.na(stop))} {.code NA} value{?s},",
+              "after coercion to integer")
+    ))
   }
   x <- enc2utf8(x)
   start <- rep_len(start, length(x))
@@ -272,9 +302,13 @@ ansi_substring <- function(text, first, last = 1000000L) {
 #' strsplit(ansi_strip(str), "")
 
 ansi_strsplit <- function(x, split, ...) {
-  split <- try(as.character(split), silent=TRUE)
-  if(inherits(split, "try-error") || !is.character(split) || length(split) > 1L)
-    stop("`split` must be character of length <= 1, or must coerce to that")
+  split <- try(as.character(split), silent = TRUE)
+  if (inherits(split, "try-error") || !is.character(split) || length(split) > 1L) {
+    throw(cli_error(
+      "{.arg split} must be character of length <= 1, or must coerce to that",
+      i = "{.arg split} is (or was coerced to) {.type {split}}"
+    ))
+  }
   if (!is.character(x)) x <- as.character(x)
   x <- enc2utf8(x)
   if(!length(split)) split <- ""
@@ -500,14 +534,36 @@ ansi_strwrap <- function(x, width = console_width(), indent = 0,
   # se we need to put in a random marker instead
   mark <- "yShtnpteEk"
   smark <- paste0("\n\n", mark, "\n\n")
-  x <- gsub("\f", smark, x, fixed = TRUE, useBytes = TRUE)
+  x <- gsub_("\f", smark, x, fixed = TRUE, useBytes = TRUE)
   fix_ff <- function(x) {
-    rem <- which(ansi_strip(x) == mark)
+    xs <- ansi_strip(x)
+    rem <- which(xs == mark)
     if (length(rem)) {
-      x[-c(rem - 1, rem, rem + 1)]
+      x <- x[-c(rem - 1, rem + 1)]
+      xs <- xs[-c(rem - 1, rem + 1)]
+      if (xs[length(xs)] == mark) {
+        x <- c(x, mark)
+        xs <- c(xs, mark)
+      }
+      if (length(x) >= 2 && x[1] == "" && xs[2] == mark) {
+        x <- x[-1]
+        xs <- xs[-1]
+      }
+      # At this point, we have as many marks as many newlines we need
+      # But (except for the begnning) we need one less empty lines than
+      # newlines, because an empty line corresponds to two newlines at
+      # the end of a non-empty line.
+      del <- which(xs[-1] == mark & xs[-length(xs)] != mark) + 1L
+      if (length(del) > 0) {
+        x <- x[-del]
+        xs <- xs[-del]
+      }
+      x[xs == mark] <- ""
+      x
     } else {
       x
     }
+
   }
 
   # First we need to remove the multiple spaces, to make it easier to
@@ -561,7 +617,7 @@ ansi_strwrap <- function(x, width = console_width(), indent = 0,
     } else if (xwc == " ") {
       xwidx[2] <- xwidx[2] + 1L
     } else {
-      stop("Internal error")
+      throw(cli_error("Internal error in {.fun cli::ansi_strwrap}")) # nocov
     }
 
     while (xsidx <= xslen && xwidx[1] <= length(xw) && xwidx[2] > xwlen) {
@@ -591,6 +647,8 @@ ansi_strwrap <- function(x, width = console_width(), indent = 0,
 #' character if Unicode characters are allowed) to the end of truncated
 #' strings.
 #'
+#' Note: `ansi_strtrim()` does not support NA values currently.
+#'
 #' @param x Character vector of ANSI strings.
 #' @param width The width to truncate to.
 #' @param ellipsis The string to append to truncated strings. Supply an
@@ -605,24 +663,45 @@ ansi_strwrap <- function(x, width = console_width(), indent = 0,
 ansi_strtrim <- function(x, width = console_width(),
                          ellipsis = symbol$ellipsis) {
 
+  if (width < 0) {
+    throw(cli_error(
+      "{.arg width} must be non-negative in {.fun cli::ansi_strtrim}."
+    ))
+  }
+
   x <- enc2utf8(x)
 
   # Unicode width notes. We have nothing to fix here, because we'll just
   # use ansi_substr() and ansi_nchar(), which work correctly with wide
   # characters.
 
+  # if ellipsis is already longer than width, then we just return that
+  tw <- ansi_nchar(ellipsis, "width")
+  if (tw == width) {
+    x[] <- ellipsis
+    return(x)
+  } else if (tw > width) {
+    x[] <- ansi_strtrim(ellipsis, width, ellipsis = "")
+    return(x)
+  }
+
   # First we cut according to _characters_. This might be too wide if we
   # have wide characters.
   lx <- length(x)
   xt <- .Call(clic_ansi_substr, x, rep(1L, lx), rep(as.integer(width), lx))
-  tw <- ansi_nchar(ellipsis, "width")
 
   # If there was a cut, or xt is too wide (using _width_!), that's bad
   # We keep the initial bad ones, these are the ones that need an ellipsis.
   # Then we keep chopping off single characters from the too wide ones,
   # until they are narrow enough.
-  bad0 <- bad <- !is.na(x) &
-    (ansi_strip(xt) != ansi_strip(x) | ansi_nchar(xt, "width") > width)
+  if (ansi_nzchar(ellipsis)) {
+    bad0 <- bad <- !is.na(x) &
+      (ansi_strip(xt) != ansi_strip(x) | ansi_nchar(xt, "width") > width)
+  } else {
+    # if ellipsis is zero length, then the truncated ones are not bad
+    bad0 <- bad <- !is.na(x) & ansi_nchar(xt, "width") > width
+  }
+
   while (any(bad)) {
     xt[bad] <- .Call(
       clic_ansi_substr,
@@ -776,7 +855,7 @@ ansi_convert <- function(x, converter, ...) {
 #' @param x Input string
 #' @param csi What to do with non-SGR ANSI sequences, either `"keep"`,
 #'   or `"drop"` them.
-#' @return Simplified `ansi_string` vector.
+#' @return Simplified `cli_ansi_string` vector.
 #'
 #' @export
 
@@ -819,9 +898,9 @@ ansi_html <- function(x, escape_reserved = TRUE, csi = c("drop", "keep")) {
   csi <- match.arg(csi)
   x <- enc2utf8(x)
   if (escape_reserved) {
-    x <- gsub("&", "&amp;", x, fixed = TRUE, useBytes = TRUE)
-    x <- gsub("<", "&lt;",  x, fixed = TRUE, useBytes = TRUE)
-    x <- gsub(">", "&gt;",  x, fixed = TRUE, useBytes = TRUE)
+    x <- gsub_("&", "&amp;", x, fixed = TRUE, useBytes = TRUE)
+    x <- gsub_("<", "&lt;",  x, fixed = TRUE, useBytes = TRUE)
+    x <- gsub_(">", "&gt;",  x, fixed = TRUE, useBytes = TRUE)
   }
   .Call(clic_ansi_html, x, csi == "keep")
 }
@@ -869,7 +948,8 @@ ansi_html_style <- function(colors = TRUE, palette = NULL) {
     ".ansi-blink"      = "{ text-decoration: blink;        }",
     # .ansi-inverse ???
     ".ansi-hide"       = "{ visibility: hidden;            }",
-    ".ansi-crossedout" = "{ text-decoration: line-through; }"
+    ".ansi-crossedout" = "{ text-decoration: line-through; }",
+    ".ansi-link:hover" = "{ text-decoration: underline;    }"
   )
 
   if (!identical(colors, FALSE)) {
@@ -929,4 +1009,76 @@ format.cli_ansi_html_style <- function(x, ...) {
 
 print.cli_ansi_html_style <- function(x, ...) {
   cat(format(x, ...), sep = "\n")
+}
+
+#' Like [base::grep()] and [base::grepl()], but for ANSI strings
+#'
+#' First ANSI sequences will be stripped with [ansi_strip()], both
+#'
+#' Note that these functions work on code points (or bytes if
+#' `useBytes = TRUE`), and not graphemes.
+#'
+#' Unlike [base::grep()] and [base::grepl()] these functions do not special
+#' case factors.
+#'
+#' Both `pattern` and `x` are converted to UTF-8.
+#'
+#' @param pattern Character scalar, regular expression or fixed string
+#'   (if `fixed = TRUE`), the pattern to search for. Other objects will be
+#'   coerced using [as.character()].
+#' @param x Character vector to search in. Other objects will be coerced
+#'   using [as.character()].
+#' @param ignore.case,perl,value Passed to [base::grep()].
+#' @param ... Extra arguments are passed to [base::grep()] or [base::grepl()].
+#' @return The same as [base::grep()] and [base::grepl()], respectively.
+#'
+#' @export
+#' @examples
+#' red_needle <- col_red("needle")
+#' haystack <- c("foo", "needle", "foo")
+#' green_haystack <- col_green(haystack)
+#' ansi_grepl(red_needle, haystack)
+#' ansi_grepl(red_needle, green_haystack)
+
+ansi_grep <- function(pattern, x, ignore.case = FALSE, perl = FALSE,
+                      value = FALSE, ...) {
+
+  # if value = FALSE, then we want to return the original values as
+  # ansi strings, so we need to special case that
+  if (value) {
+    idx <- ansi_grep(pattern, x, ignore.case = ignore.case, perl = perl,
+                     value = FALSE, ...)
+    ansi_string(x[idx])
+  } else {
+    ansi_grep_internal(grep, pattern, x, ignore.case = ignore.case,
+                       perl = perl, value = value, ...)
+  }
+}
+
+#' @rdname ansi_grep
+#' @export
+
+ansi_grepl <- function(pattern, x, ...) {
+  ansi_grep_internal(grepl, pattern, x, ...)
+}
+
+ansi_grep_internal <- function(fun, pattern, x, ...) {
+  pattern <- ansi_strip(pattern)
+  x <- ansi_strip(x)
+  fun(pattern, x, ...)
+}
+
+#' Like [base::nzchar()], but for ANSI strings
+#'
+#' @param x Charcater vector. Other objects are coarced using
+#'   [base::as.character()].
+#' @param ... Passed to [base::nzchar()].
+#' @export
+#' @examples
+#' ansi_nzchar("")
+#' ansi_nzchar(col_red(""))
+
+ansi_nzchar <- function(x, ...) {
+  x <- ansi_strip(x)
+  nzchar(x, ...)
 }

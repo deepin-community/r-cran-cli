@@ -12,7 +12,7 @@ cliapp <- function(theme = getOption("cli.theme"),
     ## Meta
     meta = function(...) {
       txt <- cli__fmt(list(...), collapse = TRUE, app = app)
-      clii__message(txt, appendLF = FALSE, output = app$output, signal = TRUE)
+      clii__message(txt, appendLF = FALSE, output = app$output, signal = app$signal)
     },
 
     ## Themes
@@ -40,6 +40,10 @@ cliapp <- function(theme = getOption("cli.theme"),
       clii_text(app, text),
 
     ## Text, not wrapped
+    inline_text = function(text)
+      clii_inline_text(app, text),
+
+    ## Text, not wrapped, verbatim
     verbatim = function(...)
       clii_verbatim(app, ...),
 
@@ -64,10 +68,10 @@ cliapp <- function(theme = getOption("cli.theme"),
       clii_ul(app, items, id, class, .close),
     ol = function(items = NULL, id = NULL, class = NULL, .close = TRUE)
       clii_ol(app, items, id, class, .close),
-    dl = function(items = NULL, id = NULL, class = NULL, .close = TRUE)
-      clii_dl(app, items, id, class, .close),
-    li = function(items = NULL, id = NULL, class = NULL)
-      clii_li(app, items, id, class),
+    dl = function(items = NULL, labels = NULL, id = NULL, class = NULL, .close = TRUE)
+      clii_dl(app, items, labels, id, class, .close),
+    li = function(items = NULL, labels = NULL, id = NULL, class = NULL)
+      clii_li(app, items, labels, id, class),
 
     ## Tables
     table = function(cells, id = NULL, class = NULL)
@@ -85,9 +89,9 @@ cliapp <- function(theme = getOption("cli.theme"),
     alert_info = function(text, id = NULL, class = NULL, wrap = FALSE)
       clii_alert(app, "alert-info", text, id, class, wrap),
 
-    ## Memo
-    memo = function(text, id = NULL, class = NULL)
-      clii_memo(app, text, id, class),
+    ## Bullets
+    bullets = function(text, id = NULL, class = NULL)
+      clii_bullets(app, text, id, class),
 
     ## Horizontal rule
     rule = function(left, center, right, id = NULL)
@@ -114,9 +118,9 @@ cliapp <- function(theme = getOption("cli.theme"),
     get_current_style = function()
       utils::tail(app$styles, 1)[[1]],
 
-    xtext = function(text = NULL, .list = NULL, indent = 0, padding = 0)
+    xtext = function(text = NULL, .list = NULL, indent = 0, padding = 0, wrap = TRUE)
       clii__xtext(app, text, .list = .list, indent = indent,
-                  padding = padding),
+                  padding = padding, wrap = wrap),
 
     vspace = function(n = 1)
       clii__vspace(app, n),
@@ -163,6 +167,10 @@ clii_text <- function(app, text) {
   app$xtext(text)
 }
 
+clii_inline_text <- function(app, text) {
+  app$xtext(text, wrap = FALSE)
+}
+
 clii_verbatim <- function(app, ..., .envir) {
   style <- app$get_current_style()
   text <- unlist(strsplit(unlist(list(...)), "\n", fixed = TRUE))
@@ -172,7 +180,7 @@ clii_verbatim <- function(app, ..., .envir) {
 }
 
 clii_md_text <- function(app, ...) {
-  stop("Markdown text is not implemented yet")
+  throw(cli_error("Markdown text is not implemented yet"))
 }
 
 ## Headings ----------------------------------------------------------
@@ -214,7 +222,7 @@ clii_blockquote <- function(app, quote, citation, id, class) {
 ## Table ------------------------------------------------------------
 
 clii_table <- function(app, cells, id, class) {
-  stop("Tables are not implemented yet")
+  throw(cli_error("Tables are not implemented yet"))
 }
 
 ## Rule -------------------------------------------------------------
@@ -258,10 +266,10 @@ clii_alert <- function(app, type, text, id, class, wrap) {
   }
 }
 
-## Memo -------------------------------------------------------------
+## Bullets -------------------------------------------------------------
 
-clii_memo <- function(app, text, id, class) {
-  clii__container_start(app, "div", id = id, class = paste("memo", class))
+clii_bullets <- function(app, text, id, class) {
+  clii__container_start(app, "div", id = id, class = paste("memo bullets", class))
   on.exit(clii__container_end(app, id), add = TRUE)
 
   # Normalize names a bit, so we can use them as class names
@@ -270,7 +278,8 @@ clii_memo <- function(app, text, id, class) {
   nms[is.na(nms) | nms == ""] <- "empty"
   nms[nms == " "] <- "space"
   nms <- gsub(" ", "-", nms)
-  cls <- paste0("memo-item memo-item-", nms)
+  # cls is vectorized here (!)
+  cls <- paste0("bullet memo-item bullet-", nms, " memo-item=", nms)
 
   lapply(seq_along(text), function(i) {
     iid <- new_uuid()

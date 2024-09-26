@@ -4,7 +4,7 @@
 \alias{ansi_strip}
 \title{Remove ANSI escape sequences from a string}
 \usage{
-ansi_strip(string, sgr = TRUE, csi = TRUE)
+ansi_strip(string, sgr = TRUE, csi = TRUE, link = TRUE)
 }
 \arguments{
 \item{string}{The input string.}
@@ -12,13 +12,15 @@ ansi_strip(string, sgr = TRUE, csi = TRUE)
 \item{sgr}{Whether to remove for SGR (styling) control sequences.}
 
 \item{csi}{Whether to remove for non-SGR control sequences.}
+
+\item{link}{Whether to remove ANSI hyperlinks.}
 }
 \value{
 The cleaned up string. Note that \code{ansi_strip()} always drops
-the \code{ansi_string} class, even if \code{sgr} and sci\code{are}FALSE`.
+the \code{cli_ansi_string} class, even if \code{sgr} and sci\code{are}FALSE`.
 }
 \description{
-The input may be of class \code{ansi_string} class, this is also dropped
+The input may be of class \code{cli_ansi_string} class, this is also dropped
 from the result.
 }
 \examples{
@@ -28,6 +30,7 @@ ansi_strip(col_red("foobar")) == "foobar"
 Other low level ANSI functions: 
 \code{\link{ansi_has_any}()},
 \code{\link{ansi_hide_cursor}()},
-\code{\link{ansi_regex}()}
+\code{\link{ansi_regex}()},
+\code{\link{ansi_string}()}
 }
 \concept{low level ANSI functions}

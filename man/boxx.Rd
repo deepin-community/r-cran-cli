@@ -70,67 +70,187 @@ name which will be used in \code{\link[=make_ansi_style]{make_ansi_style()}} to 
 Draw a banner-like box in the console
 }
 \details{
-\subsection{Defaults}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!")
-}\if{html}{\out{</div>}}
+\subsection{Defaults}{
 
-\if{html}{\figure{box-default.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ┌──────────────────┐                                                            
+#> │                  │                                                            
+#> │   Hello there!   │                                                            
+#> │                  │                                                            
+#> └──────────────────┘                                                            
+</pre></div>
+}}
+
 }
 
-\subsection{Change border style}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", border_style = "double")
-}\if{html}{\out{</div>}}
+\subsection{Change border style}{
 
-\if{html}{\figure{box-border.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", border_style = "double")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ╔══════════════════╗                                                            
+#> ║                  ║                                                            
+#> ║   Hello there!   ║                                                            
+#> ║                  ║                                                            
+#> ╚══════════════════╝                                                            
+</pre></div>
+}}
+
 }
 
-\subsection{Multiple lines}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx(c("Hello", "there!"), padding = 1)
-}\if{html}{\out{</div>}}
+\subsection{Multiple lines}{
 
-\if{html}{\figure{box-lines.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx(c("Hello", "there!"), padding = 1)
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ┌────────────┐                                                                  
+#> │            │                                                                  
+#> │   Hello    │                                                                  
+#> │   there!   │                                                                  
+#> │            │                                                                  
+#> └────────────┘                                                                  
+</pre></div>
+}}
+
 }
 
-\subsection{Padding}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1)
+\subsection{Padding}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1)
 boxx("Hello there!", padding = c(1, 5, 1, 5))
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ┌──────────────────┐                                                            
+#> │                  │                                                            
+#> │   Hello there!   │                                                            
+#> │                  │                                                            
+#> └──────────────────┘                                                            
+#> ┌──────────────────────┐                                                        
+#> │                      │                                                        
+#> │     Hello there!     │                                                        
+#> │                      │                                                        
+#> └──────────────────────┘                                                        
+</pre></div>
+}}
 
-\if{html}{\figure{box-padding.svg}}
 }
 
-\subsection{Floating}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1, float = "center")
+\subsection{Floating}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1, float = "center")
 boxx("Hello there!", padding = 1, float = "right")
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#>                           ┌──────────────────┐                                  
+#>                           │                  │                                  
+#>                           │   Hello there!   │                                  
+#>                           │                  │                                  
+#>                           └──────────────────┘                                  
+#>                                                   ┌──────────────────┐          
+#>                                                   │                  │          
+#>                                                   │   Hello there!   │          
+#>                                                   │                  │          
+#>                                                   └──────────────────┘          
+</pre></div>
+}}
 
-\if{html}{\figure{box-float.svg}}
 }
 
-\subsection{Text color}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx(col_cyan("Hello there!"), padding = 1, float = "center")
-}\if{html}{\out{</div>}}
+\subsection{Text color}{
 
-\if{html}{\figure{box-text-color.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx(col_cyan("Hello there!"), padding = 1, float = "center")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#>                           ┌──────────────────┐                                  
+#>                           │                  │                                  
+#>                           │   <span style="color: #2AA198;">Hello there!</span>   │                                  
+#>                           │                  │                                  
+#>                           └──────────────────┘                                  
+</pre></div>
+}}
+
 }
 
-\subsection{Background color}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1, background_col = "brown")
+\subsection{Background color}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1, background_col = "brown")
 boxx("Hello there!", padding = 1, background_col = bg_red)
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ┌──────────────────┐                                                            
+#> │<span style="background-color: #990000;">                  </span>│                                                            
+#> │<span style="background-color: #990000;">   Hello there!   </span>│                                                            
+#> │<span style="background-color: #990000;">                  </span>│                                                            
+#> └──────────────────┘                                                            
+#> ┌──────────────────┐                                                            
+#> │<span style="background-color: #DC322F;">                  </span>│                                                            
+#> │<span style="background-color: #DC322F;">   Hello there!   </span>│                                                            
+#> │<span style="background-color: #DC322F;">                  </span>│                                                            
+#> └──────────────────┘                                                            
+</pre></div>
+}}
 
-\if{html}{\figure{box-bg-color.svg}}
 }
 
-\subsection{Border color}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1, border_col = "green")
+\subsection{Border color}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx("Hello there!", padding = 1, border_col = "green")
 boxx("Hello there!", padding = 1, border_col = col_red)
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">┌──────────────────┐</span>                                                            
+#> <span style="color: #859900;">│</span>                  <span style="color: #859900;">│</span>                                                            
+#> <span style="color: #859900;">│</span>   Hello there!   <span style="color: #859900;">│</span>                                                            
+#> <span style="color: #859900;">│</span>                  <span style="color: #859900;">│</span>                                                            
+#> <span style="color: #859900;">└──────────────────┘</span>                                                            
+#> <span style="color: #DC322F;">┌──────────────────┐</span>                                                            
+#> <span style="color: #DC322F;">│</span>                  <span style="color: #DC322F;">│</span>                                                            
+#> <span style="color: #DC322F;">│</span>   Hello there!   <span style="color: #DC322F;">│</span>                                                            
+#> <span style="color: #DC322F;">│</span>                  <span style="color: #DC322F;">│</span>                                                            
+#> <span style="color: #DC322F;">└──────────────────┘</span>                                                            
+</pre></div>
+}}
 
-\if{html}{\figure{box-border-color.svg}}
 }
 
-\subsection{Label alignment}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx(c("Hi", "there", "you!"), padding = 1, align = "left")
+\subsection{Label alignment}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{boxx(c("Hi", "there", "you!"), padding = 1, align = "left")
 boxx(c("Hi", "there", "you!"), padding = 1, align = "center")
 boxx(c("Hi", "there", "you!"), padding = 1, align = "right")
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ┌───────────┐                                                                   
+#> │           │                                                                   
+#> │   Hi      │                                                                   
+#> │   there   │                                                                   
+#> │   you!    │                                                                   
+#> │           │                                                                   
+#> └───────────┘                                                                   
+#> ┌───────────┐                                                                   
+#> │           │                                                                   
+#> │     Hi    │                                                                   
+#> │   there   │                                                                   
+#> │    you!   │                                                                   
+#> │           │                                                                   
+#> └───────────┘                                                                   
+#> ┌───────────┐                                                                   
+#> │           │                                                                   
+#> │      Hi   │                                                                   
+#> │   there   │                                                                   
+#> │    you!   │                                                                   
+#> │           │                                                                   
+#> └───────────┘                                                                   
+</pre></div>
+}}
 
-\if{html}{\figure{box-label-align.svg}}
 }
 
-\subsection{A very customized box}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{star <- symbol$star
+\subsection{A very customized box}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{star <- symbol$star
 label <- c(paste(star, "Hello", star), "  there!")
 boxx(
   col_white(label),
@@ -140,9 +260,17 @@ boxx(
   border_col = "tomato3",
   background_col="darkolivegreen"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #cc3333;">                           ╭───────────────╮</span>                                    
+#>                            <span style="color: #cc3333;">│</span><span style="background-color: #336633;">               </span><span style="color: #cc3333;">│</span>                                    
+#>                            <span style="color: #cc3333;">│</span><span style="background-color: #336633;">   </span><span style="color: #EEE8D5;background-color: #336633;">★ Hello ★</span><span style="background-color: #336633;">   </span><span style="color: #cc3333;">│</span>                                    
+#>                            <span style="color: #cc3333;">│</span><span style="background-color: #336633;">   </span><span style="color: #EEE8D5;background-color: #336633;">  there!</span><span style="background-color: #336633;">    </span><span style="color: #cc3333;">│</span>                                    
+#>                            <span style="color: #cc3333;">│</span><span style="background-color: #336633;">               </span><span style="color: #cc3333;">│</span>                                    
+#> <span style="color: #cc3333;">                           ╰───────────────╯</span>                                    
+</pre></div>
+}}
 
-\if{html}{\figure{box-custom.svg}}
 }
 }
 \section{About fonts and terminal settings}{

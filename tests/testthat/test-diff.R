@@ -41,7 +41,7 @@ test_that("format.cli_diff_chr context", {
   expect_snapshot(print(d2, context = Inf))
 })
 
-test_that_cli(config = c("plain", "ansi"), "diff_str", {
+test_that_cli(configs = c("plain", "ansi"), "diff_str", {
   str1 <- "abcdefghijklmnopqrstuvwxyz"
   str2 <- "PREabcdefgMIDDLEnopqrstuvwxyzPOST"
   d <- diff_str(str1, str2)
@@ -65,16 +65,15 @@ test_that("warnings and errors", {
 })
 
 test_that("max_diff", {
-  err <- tryCatch(
-    diff_chr("a", c("a", "b"), 0),
-    error = function(e) e
+  expect_snapshot_error(
+    class = "cli_diff_max_dist",
+    diff_chr("a", c("a", "b"), 0)
   )
-  expect_s3_class(err, "cli_diff_max_dist")
 
   expect_silent(diff_chr(c("a", "c"), c("a", "b"), 2))
-  err <- tryCatch(
-    diff_chr(c("a", "c"), c("a", "b"), 1),
-    error = function(e) e
+
+  expect_snapshot_error(
+    class = "cli_diff_max_dist",
+    diff_chr(c("a", "c"), c("a", "b"), 1)
   )
-  expect_s3_class(err, "cli_diff_max_dist")
 })

@@ -1,0 +1,2 @@
+# False positive since we have `Depends: r-api-4.0`
+r-cran-cli: missing-dep-for-interpreter Rscript (does not satisfy r-base-core:any)*

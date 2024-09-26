@@ -31,11 +31,16 @@ and returned.}
 It can be used to separate parts of the output.
 }
 \details{
-\subsection{Inline styling and interpolation}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{pkg <- "mypackage"
-cli_rule(left = "\{.pkg \{pkg\}\} results")
-}\if{html}{\out{</div>}}
+\subsection{Inline styling and interpolation}{
 
-\if{html}{\figure{cli-rule.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{pkg <- "mypackage"
+cli_rule(left = "\{.pkg \{pkg\}\} results")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ── <span style="color: #268BD2;">mypackage</span> results ─────────────────────────────────────────────────          
+</pre></div>
+}}
+
 }
 
 \subsection{Theming}{
@@ -48,13 +53,45 @@ property. Possible values are:
 \item \code{"bar1"}, \code{"bar2"}, \code{"bar3"}, etc., \code{"bar8"} uses varying height bars.
 }
 
-Colors and background colors can similarly changed via a theme.\if{html}{\out{<div class="sourceCode r">}}\preformatted{d <- cli_div(theme = list(rule = list(
+Colors and background colors can similarly changed via a theme.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{d <- cli_div(theme = list(rule = list(
   color = "cyan",
   "line-type" = "double")))
 cli_rule("Summary", right = "\{.pkg mypackage\}")
 cli_end(d)
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #2AA198;">══ Summary ══════════════════════════════════════════════ </span><span style="color: #268BD2;">mypackage</span><span style="color: #2AA198;"> ══</span>          
+</pre></div>
+}}
 
-\if{html}{\figure{cli-rule-line-type.svg}}
 }
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}

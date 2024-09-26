@@ -51,7 +51,9 @@ message, without progress units.
 \details{
 \code{cli_progress_step()} always shows the progress message,
 even if no update is due.
-\subsection{Basic use}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
+\subsection{Basic use}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
   cli_progress_step("Downloading data")
   Sys.sleep(2)
   cli_progress_step("Importing data")
@@ -70,8 +72,10 @@ f()
 \subsection{Spinner}{
 
 You can add a spinner to some or all steps with \code{spinner = TRUE},
-but not that this will only work if you call \code{\link[=cli_progress_update]{cli_progress_update()}}
-regularly.\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
+but note that this will only work if you call \code{\link[=cli_progress_update]{cli_progress_update()}}
+regularly.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
   cli_progress_step("Downloading data", spinner = TRUE)
   for (i in 1:100) \{ Sys.sleep(2/100); cli_progress_update() \}
   cli_progress_step("Importing data")
@@ -91,7 +95,9 @@ f()
 
 You can make the step messages dynamic, using glue templates.
 Since \code{cli_progress_step()} show that message immediately, we need
-to initialize \code{msg} first.\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
+to initialize \code{msg} first.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
   msg <- ""
   cli_progress_step("Downloading data\{msg\}", spinner = TRUE)
   for (i in 1:100) \{
@@ -115,7 +121,9 @@ f()
 \subsection{Termination messages}{
 
 You can specify a different message for successful and/or
-unsuccessful termination:\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
+unsuccessful termination:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{
   size <- 0L
   cli_progress_step(
     "Downloading data.",
@@ -134,3 +142,41 @@ f()
 \if{html}{\figure{progress-step-msg.svg}}
 }
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other progress bar functions: 
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_builtin_handlers}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_num}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_styles}()},
+\code{\link{progress-variables}}
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}
+\concept{progress bar functions}

@@ -6,6 +6,7 @@
 \usage{
 cli_li(
   items = NULL,
+  labels = names(items),
   id = NULL,
   class = NULL,
   .auto_close = TRUE,
@@ -14,6 +15,8 @@ cli_li(
 }
 \arguments{
 \item{items}{Character vector of items, or \code{NULL}.}
+
+\item{labels}{For definition lists the item labels.}
 
 \item{id}{Id of the new container. Can be used for closing it with
 \code{\link[=cli_end]{cli_end()}} or in themes. If \code{NULL}, then an id is generated and
@@ -34,7 +37,9 @@ The id of the new container element, invisibly.
 A list item is a container, see \link{containers}.
 }
 \details{
-\subsection{Nested lists}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+\subsection{Nested lists}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   ul <- cli_ul()
   cli_li("one:")
   cli_ol(letters[1:3])
@@ -43,8 +48,43 @@ A list item is a container, see \link{containers}.
   cli_end(ul)
 \}
 fun()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> • one:                                                                          
+#>   1. a                                                                          
+#>   2. b                                                                          
+#>   3. c                                                                          
+#> • two:                                                                          
+#> • three                                                                         
+</pre></div>
+}}
 
-\if{html}{\figure{cli-li.svg}}
 }
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}

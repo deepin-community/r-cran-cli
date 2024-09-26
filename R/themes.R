@@ -81,13 +81,13 @@ clii_remove_theme <- function(app, id) {
 #' @seealso [themes], [simple_theme()].
 #' @return A named list, a CLI theme.
 #'
-#' @param dark Whether to use a dark theme. The `cli_theme_dark` option
+#' @param dark Whether to use a dark theme. The `cli.theme_dark` option
 #'   can be used to request a dark theme explicitly. If this is not set,
 #'   or set to `"auto"`, then cli tries to detect a dark theme, this
 #'   works in recent RStudio versions and in iTerm on macOS.
 #' @export
 
-builtin_theme <- function(dark = getOption("cli_theme_dark", "auto")) {
+builtin_theme <- function(dark = getOption("cli.theme_dark", "auto")) {
 
   dark <- detect_dark_theme(dark)
 
@@ -130,33 +130,33 @@ builtin_theme <- function(dark = getOption("cli_theme_dark", "auto")) {
       before = function() paste0(col_cyan(symbol$info), " ")
     ),
 
-    ".memo .memo-item-empty" = list(),
-    ".memo .memo-item-space" = list("margin-left" = 2),
-    ".memo .memo-item-v" = list(
+    ".bullets .bullet-empty" = list(),
+    ".bullets .bullet-space" = list("margin-left" = 2),
+    ".bullets .bullet-v" = list(
       "text-exdent" = 2,
       before = function(x) paste0(col_green(symbol$tick), " ")
     ),
-    ".memo .memo-item-x" = list(
+    ".bullets .bullet-x" = list(
       "text-exdent" = 2,
       before = function(x) paste0(col_red(symbol$cross), " ")
     ),
-    ".memo .memo-item-!" = list(
+    ".bullets .bullet-!" = list(
       "text-exdent" = 2,
       before = function(x) paste0(col_yellow("!"), " ")
     ),
-    ".memo .memo-item-i" = list(
+    ".bullets .bullet-i" = list(
       "text-exdent" = 2,
       before = function(x) paste0(col_cyan(symbol$info), " ")
     ),
-    ".memo .memo-item-*" = list(
+    ".bullets .bullet-*" = list(
       "text-exdent" = 2,
       before = function(x) paste0(col_cyan(symbol$bullet), " ")
     ),
-    ".memo .memo-item->" = list(
+    ".bullets .bullet->" = list(
       "text-exdent" = 2,
       before = function(x) paste0(symbol$arrow_right, " ")
     ),
-    ".memo .memo-item-1" = list(
+    ".bullets .bullet-1" = list(
     ),
 
     par = list("margin-top" = 0, "margin-bottom" = 1),
@@ -165,7 +165,7 @@ builtin_theme <- function(dark = getOption("cli_theme_dark", "auto")) {
     ),
 
     # these are tags in HTML, but in cli they are inline
-    span.dt = list(after = ": "),
+    span.dt = list(postfix = ": "),
     span.dd = list(),
 
     # This means that list elements have a margin, if they are nested
@@ -204,11 +204,33 @@ builtin_theme <- function(dark = getOption("cli_theme_dark", "auto")) {
     span.arg = theme_code_tick(dark),
     span.kbd = list(before = "[", after = "]", color = "blue"),
     span.key = list(before = "[", after = "]", color = "blue"),
-    span.file = list(color = "blue", fmt = quote_weird_name),
-    span.path = list(color = "blue", fmt = quote_weird_name),
-    span.email = list(color = "blue", fmt = quote_weird_name),
-    span.url = list(before = "<", after = ">", color = "blue",
-                    "font-style" = "italic"),
+    span.file = theme_file(),
+    span.path = theme_file(),
+    span.email = list(
+      color = "blue",
+      transform = function(x) make_link(x, type = "email"),
+      fmt = quote_weird_name
+    ),
+    span.url = list(
+      before = "<", after = ">",
+      color = "blue", "font-style" = "italic",
+      transform = function(x) make_link(x, type = "url")
+    ),
+    span.href = list(
+      transform = function(x) make_link(x, type = "href")
+    ),
+    span.help = list(
+      transform = function(x) make_link(x, type = "help")
+    ),
+    span.topic = list(
+      transform = function(x) make_link(x, type = "topic")
+    ),
+    span.vignette = list(
+      transform = function(x) make_link(x, type = "vignette")
+    ),
+    span.run = list(
+      transform = function(x) make_link(x, type = "run")
+    ),
     span.var = theme_code_tick(dark),
     span.col = theme_code_tick(dark),
     span.str = list(fmt = encode_string),
@@ -223,7 +245,13 @@ builtin_theme <- function(dark = getOption("cli_theme_dark", "auto")) {
       transform = theme_progress_bar,
       color = "green"
     ),
-    span.or = list(vec_sep2 = " or ", vec_last = ", or "),
+    span.obj_type_friendly = list(
+      transform = function(x) format_inline(typename(x))
+    ),
+    span.type = list(
+      transform = function(x) format_inline(typename(x))
+    ),
+    span.or = list("vec-sep2" = " or ", "vec-last" = ", or "),
     span.timestamp = list(before = "[", after = "]", color = "grey")
   )
 }
@@ -284,9 +312,11 @@ detect_dark_theme <- function(dark) {
   tryCatch({
     if (dark == "auto") {
       dark <- if (Sys.getenv("RSTUDIO", "0") == "1") {
-        rstudioapi::getThemeInfo()$dark
+        get_rstudio_theme()$dark
       } else if (is_iterm()) {
         is_iterm_dark()
+      } else if (is_emacs()) {
+        Sys.getenv("ESS_BACKGROUND_MODE", "light") == "dark"
       } else {
         FALSE
       }
@@ -297,19 +327,43 @@ detect_dark_theme <- function(dark) {
 }
 
 theme_code <- function(dark) {
-  if (dark) {
-    list("background-color" = "#232323", color = "#d0d0d0")
-  } else{
-    list("background-color" = "#e8e8e8", color = "#202020")
-  }
+  list()
+}
+
+tick_formatter <- function(x) {
+  tt <- grepl("`", x, fixed = TRUE) + 1L
+  t1 <- c("`", "`` ")[tt]
+  t2 <- c("`", " ``")[tt]
+  paste0(t1, x, t2)
+}
+
+tick_formatter_fun <- function(x) {
+  tt <- grepl("`", x, fixed = TRUE) + 1L
+  t1 <- c("`", "`` ")[tt]
+  t2 <- c("()`", " ()``")[tt]
+  paste0(t1, x, t2)
 }
 
 theme_code_tick <- function(dark) {
-  utils::modifyList(theme_code(dark), list(before = "`", after = "`"))
+  utils::modifyList(
+    theme_code(dark),
+    list(transform = tick_formatter)
+  )
 }
 
 theme_function <- function(dark) {
-  utils::modifyList(theme_code(dark), list(before = "`", after = "()`"))
+  utils::modifyList(
+    theme_code(dark),
+    list(transform = function(x) tick_formatter_fun(make_link(x, type = "fun")))
+  )
+}
+
+theme_file <- function() {
+  list(
+    color = "blue",
+    transform = function(x) make_link(x, type = "file"),
+    fmt = quote_weird_name
+  )
 }
 
 format_r_code <- function(dark) {
@@ -382,13 +436,20 @@ create_formatter <- function(x) {
 merge_embedded_styles <- function(old, new) {
   # before and after is not inherited, fmt is not inherited, either
   # side margins are additive, class mappings are merged
-  # rest is updated, counter is reset
+  # rest is updated, counter is reset, prefix and postfix are merged
   old$before <- old$after <- old$fmt <- NULL
+  old$transform <- NULL
+
+  # these will be applied on the container, so we don't need them inside
+  old$color <- old$`background-color` <- NULL
 
   top <- new$`margin-top` %||% 0L
   bottom <- new$`margin-bottom` %||% 0L
   left <- (old$`margin-left` %||% 0L) + (new$`margin-left` %||% 0L)
   right <- (old$`margin-right` %||% 0L) + (new$`margin-right` %||% 0L)
+
+  prefix <- paste0(old$prefix, new$prefix)
+  postfix <- paste0(new$postfix, old$postfix)
 
   map <- utils::modifyList(old$`class-map` %||% list(), new$`class-map` %||% list())
 
@@ -396,7 +457,8 @@ merge_embedded_styles <- function(old, new) {
 
   mrg <- utils::modifyList(old, new)
   mrg[c("margin-top", "margin-bottom", "margin-left", "margin-right",
-        "start", "class-map")] <- list(top, bottom, left, right, start, map)
+        "start", "class-map", "prefix", "postfix")] <-
+    list(top, bottom, left, right, start, map, prefix, postfix)
 
   ## Formatter needs to be re-generated
   create_formatter(mrg)

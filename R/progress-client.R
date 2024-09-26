@@ -19,7 +19,10 @@
 #' It is good practice to always set the `name` argument, to make the
 #' progress bar more informative.
 #'
-#' ```{asciicast progress-1, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-1}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' clean <- function() {
 #'   cli_progress_bar("Cleaning data", total = 100)
 #'   for (i in 1:100) {
@@ -35,7 +38,10 @@
 #'
 #' There are three builtin types of progress bars, and a custom type.
 #'
-#' ```{asciicast progress-tasks, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-tasks}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' tasks <- function() {
 #'   cli_progress_bar("Tasks", total = 3, type = "tasks")
 #'   for (i in 1:3) {
@@ -53,7 +59,10 @@
 #' Note that you can also set `total` in `cli_progress_update()`, if it
 #' not known when the progress bar is created, but you learn it later.
 #'
-#' ```{asciicast progress-natotal, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-natotal}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' nototal <- function() {
 #'   cli_progress_bar("Parameter tuning")
 #'   for (i in 1:100) {
@@ -77,7 +86,10 @@
 #'
 #' In this example the first progress bar is cleared, the second is not.
 #'
-#' ```{asciicast progress-clear, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-clear}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function() {
 #'   cli_progress_bar("Data cleaning", total = 100, clear = TRUE)
 #'   for (i in 1:100) {
@@ -97,15 +109,20 @@
 #'
 #' Updating a progress bar on the screen is costly, so cli tries to avoid
 #' it for quick loops. By default a progress bar is only shown after two
-#' seconds. You can change this default with the `cli.progress_show_after`
-#' global option (see [cli-config]).
+#' seconds, or after half of that if less than 50% of the iterations are
+#' complete. You can change the two second default with the
+#' `cli.progress_show_after` global option (see [cli-config]).
 #'
 #' (In the cli documentation we usually set `cli.progress_show_after` to
 #' `0` (zero seconds), so progress bars are shown immediately.)
 #'
-#' In this example we only show the progress bar after two seconds.
+#' In this example we only show the progress bar after one second, because
+#' more than 50% of the iterations remain after one second.
 #'
-#' ```{asciicast progress-after, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-after}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function() {
 #'   cli_alert("Starting now, at {Sys.time()}")
 #'   cli_progress_bar(
@@ -121,7 +138,7 @@
 #' fun()
 #' ```
 #'
-#' ```{asciicast, include = FALSE, dependson = -1}
+#' ```{asciicast, include = FALSE, cache = FALSE}
 #' # reset to our default
 #' options(cli.progress_show_after = 0)
 #' ```
@@ -140,7 +157,10 @@
 #' to explicitly deal with progress bar ids, and you don't need to
 #' explicitly call `cli_progress_done()`:
 #'
-#' ```{asciicast progress-current, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-current}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function() {
 #'   cli_progress_bar("First step ", total = 100)
 #'   for (i in 1:100) {
@@ -163,7 +183,10 @@
 #' will remove the progress bar temporarily, emit the output, and then
 #' restores the progress bar.
 #'
-#' ```{asciicast progress-output, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-output}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function() {
 #'   cli_alert_info("Before the progress bar")
 #'   cli_progress_bar("Calculating", total = 100)
@@ -194,7 +217,10 @@
 #' like the elapsed time, of the ETA manually. You can also use your own
 #' variables in the calling function:
 #'
-#' ```{asciicast progress-format, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-format}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function(urls) {
 #'   cli_progress_bar(
 #'     format = paste0(
@@ -268,8 +294,11 @@
 #' @return `cli_progress_bar()` returns the id of the new progress bar.
 #' The id is a string constant.
 #'
+#' @seealso These functions support [inline markup][inline-markup].
 #' @seealso [cli_progress_message()] and [cli_progress_step()] for simpler
 #'   progress messages.
+#' @family progress bar functions
+#' @family functions supporting inline markup
 #' @aliases __cli_update_due cli_tick_reset ccli_tick_reset ticking
 #' @export
 
@@ -304,6 +333,7 @@ cli_progress_bar <- function(name = NULL,
   bar$type <- match.arg(type)
   bar$total <- total
   bar$show_after <- start + getOption("cli.progress_show_after", 2)
+  bar$show_50 <- start + getOption("cli.progress_show_after", 2) / 2
   bar$format_orig <- bar$format <- format
   bar$format_done_orig <- bar$format_done <- format_done %||% format
   bar$format_failed_orig <- bar$format_failed <- format_failed %||% format
@@ -404,7 +434,8 @@ cli_progress_update <- function(inc = NULL, set = NULL, total = NULL,
 
   now <- .Call(clic_get_time)
   upd <- .Call(clic_update_due)
-  if (force || (upd && now > pb$show_after)) {
+  if (force || (upd && now > pb$show_after) ||
+      (!is.na(pb$total) && upd && now > pb$show_50 && pb$current <= pb$total / 2)) {
     if (upd) cli_tick_reset()
     pb$tick <- pb$tick + 1L
 
@@ -485,7 +516,10 @@ cli_progress_done <- function(id = NULL, .envir = parent.frame(),
 #' The text is passed to the progress handler(s), that may or may not be
 #' able to print it.
 #'
-#' ```{asciicast progress-output2, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-output2}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function() {
 #'   cli_alert_info("Before the progress bar")
 #'   cli_progress_bar("Calculating", total = 100)
@@ -508,6 +542,9 @@ cli_progress_done <- function(id = NULL, .envir = parent.frame(),
 #' @param .envir Environment to use for glue interpolation of `text`.
 #' @return `TRUE`, always.
 #'
+#' @seealso This function supports [inline markup][inline-markup].
+#' @family progress bar functions
+#' @family functions supporting inline markup
 #' @export
 
 cli_progress_output <- function(text, id = NULL, .envir = parent.frame()) {
@@ -519,7 +556,7 @@ cli_progress_output <- function(text, id = NULL, .envir = parent.frame()) {
   pb <- clienv$progress[[id]]
   if (is.null(pb)) stop("Cannot find progress bar `", id, "`")
 
-  txt <- fmt(cli_text(text, .envir = .envir))
+  txt <- cli_fmt(cli_text(text, .envir = .envir))
   for (h in pb$handlers) {
     if ("output" %in% names(h)) {
       h$output(pb, .envir = .envir, text = txt)
@@ -544,7 +581,11 @@ cli_progress_output <- function(text, id = NULL, .envir = parent.frame()) {
 #' [cli_progress_update()], then cli uses the current values in the string
 #' substitutions.
 #'
-#' ```{asciicast progress-message, echo = c(-2, -3), R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-message}
+#' #| echo = c(-2, -3),
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' fun <- function() {
 #'   opts <- options(cli.progress_clear = TRUE)
 #'   on.exit(options(opts), add = TRUE)
@@ -573,8 +614,11 @@ cli_progress_output <- function(text, id = NULL, .envir = parent.frame()) {
 #'
 #' @return The id of the new progress bar.
 #'
+#' @seealso This function supports [inline markup][inline-markup].
 #' @seealso [cli_progress_bar()] for the complete progress bar API.
 #'   [cli_progress_step()] for a similar display that is styled by default.
+#' @family progress bar functions
+#' @family functions supporting inline markup
 #' @export
 
 cli_progress_message <- function(msg,
@@ -609,7 +653,10 @@ cli_progress_message <- function(msg,
 #'
 #' ## Basic use
 #'
-#' ```{asciicast progress-step, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-step}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' f <- function() {
 #'   cli_progress_step("Downloading data")
 #'   Sys.sleep(2)
@@ -626,10 +673,13 @@ cli_progress_message <- function(msg,
 #' ## Spinner
 #'
 #' You can add a spinner to some or all steps with `spinner = TRUE`,
-#' but not that this will only work if you call [cli_progress_update()]
+#' but note that this will only work if you call [cli_progress_update()]
 #' regularly.
 #'
-#' ```{asciicast progress-step-spin, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-step-spin}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' f <- function() {
 #'   cli_progress_step("Downloading data", spinner = TRUE)
 #'   for (i in 1:100) { Sys.sleep(2/100); cli_progress_update() }
@@ -649,7 +699,10 @@ cli_progress_message <- function(msg,
 #' Since `cli_progress_step()` show that message immediately, we need
 #' to initialize `msg` first.
 #'
-#' ```{asciicast progress-step-dynamic, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-step-dynamic}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' f <- function() {
 #'   msg <- ""
 #'   cli_progress_step("Downloading data{msg}", spinner = TRUE)
@@ -673,7 +726,11 @@ cli_progress_message <- function(msg,
 #' You can specify a different message for successful and/or
 #' unsuccessful termination:
 #'
-#' ```{asciicast progress-step-msg, error = FALSE, R.options = list(asciicast_at = NULL)}
+#' ```{asciicast progress-step-msg}
+#' #| error = FALSE,
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
 #' f <- function() {
 #'   size <- 0L
 #'   cli_progress_step(
@@ -709,6 +766,9 @@ cli_progress_message <- function(msg,
 #' @param .envir Passed to [cli_progress_bar()].
 #' @param ... Passed to [cli_progress_bar()].
 #'
+#' @seealso This function supports [inline markup][inline-markup].
+#' @family progress bar functions
+#' @family functions supporting inline markup
 #' @export
 
 cli_progress_step <- function(msg,

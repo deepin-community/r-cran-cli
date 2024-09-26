@@ -59,22 +59,7 @@ test_that_cli("format_message", {
   }))
 })
 
-test_that("format_error width in RStudio", {
-  mockery::stub(format_error, "rstudio_detect", list(type = "rstudio_console"))
-  local_rng_version("3.3.0")
-  set.seed(42)
-  expect_snapshot(error = TRUE, local({
-    len <- 26
-    idx <- 100
-    stop(format_error(c(
-            lorem_ipsum(1, 3),
-      "i" = lorem_ipsum(1, 3),
-      "x" = lorem_ipsum(1, 3)
-    )))
-  }))
-})
-
-test_that_cli(config = "ansi", "color in RStudio", {
+test_that_cli(configs = "ansi", "color in RStudio", {
   mockery::stub(
     get_rstudio_fg_color0,
     "rstudio_detect",
@@ -82,7 +67,7 @@ test_that_cli(config = "ansi", "color in RStudio", {
   )
   mockery::stub(
     get_rstudio_fg_color0,
-    "rstudioapi::getThemeInfo",
+    "get_rstudio_theme",
     list(foreground = "rgb(0, 0, 0)")
   )
   expect_snapshot({
@@ -92,7 +77,7 @@ test_that_cli(config = "ansi", "color in RStudio", {
 
   mockery::stub(
     get_rstudio_fg_color0,
-    "rstudioapi::getThemeInfo",
+    "get_rstudio_theme",
     list()
   )
   expect_null(get_rstudio_fg_color0())
@@ -105,7 +90,7 @@ test_that_cli(config = "ansi", "color in RStudio", {
   expect_null(get_rstudio_fg_color0())
 })
 
-test_that_cli(config = "ansi", "update_rstudio_color", {
+test_that_cli(configs = "ansi", "update_rstudio_color", {
   mockery::stub(
     update_rstudio_color,
     "get_rstudio_fg_color",
@@ -149,4 +134,33 @@ test_that("cli.condition_width", {
     format_warning(msg)
     format_message(msg)
   })
+})
+
+test_that_cli("suppressing Unicode bullets", {
+  withr::local_options(cli.condition_unicode_bullets = FALSE)
+  expect_snapshot(error = TRUE, local({
+    n <- "boo"
+    stop(format_error(c(
+            "{.var n} must be a numeric vector",
+      "x" = "You've supplied a {.cls {class(n)}} vector.",
+      "v" = "Success.",
+      "i" = "Info.",
+      "*" = "Bullet",
+      ">" = "Arrow"
+    )))
+  }))
+})
+
+test_that("edge cases", {
+  expect_equal(cli::format_error(""), "")
+  expect_equal(cli::format_error(NULL), "")
+  expect_equal(cli::format_error(character()), "")
+
+  expect_equal(cli::format_warning(""), "")
+  expect_equal(cli::format_warning(NULL), "")
+  expect_equal(cli::format_warning(character()), "")
+
+  expect_equal(cli::format_message(""), "")
+  expect_equal(cli::format_message(NULL), "")
+  expect_equal(cli::format_message(character()), "")
 })

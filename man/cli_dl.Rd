@@ -6,6 +6,7 @@
 \usage{
 cli_dl(
   items = NULL,
+  labels = names(items),
   id = NULL,
   class = NULL,
   .close = TRUE,
@@ -16,6 +17,8 @@ cli_dl(
 \arguments{
 \item{items}{Named character vector, or \code{NULL}. If not \code{NULL}, they
 are used as list items.}
+
+\item{labels}{Item labels. Defaults the names in \code{items}.}
 
 \item{id}{Id of the list container. Can be used for closing it with
 \code{\link[=cli_end]{cli_end()}} or in themes. If \code{NULL}, then an id is generated and
@@ -39,24 +42,65 @@ The id of the new container element, invisibly.
 A definition list is a container, see \link{containers}.
 }
 \details{
-\subsection{All items at once}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+\subsection{All items at once}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_dl(c(foo = "one", bar = "two", baz = "three"))
 \}
 fun()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> foo: one                                                                        
+#> bar: two                                                                        
+#> baz: three                                                                      
+</pre></div>
+}}
 
-\if{html}{\figure{cli-dl.svg}}
 }
 
-\subsection{Items one by one}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+\subsection{Items one by one}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_dl()
   cli_li(c(foo = "\{.emph one\}"))
   cli_li(c(bar = "two"))
   cli_li(c(baz = "three"))
 \}
 fun()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> foo: <span style="font-style: italic;">one</span>                                                                        
+#> bar: two                                                                        
+#> baz: three                                                                      
+</pre></div>
+}}
 
-\if{html}{\figure{cli-dl-2.svg}}
 }
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}

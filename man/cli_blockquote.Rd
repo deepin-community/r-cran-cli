@@ -36,7 +36,43 @@ A section that is quoted from another source. It is typically indented.
   "times; premature optimization is the root of all evil (or at least",
   "most of it) in programming.")
 cli_blockquote(evil, citation = "Donald Ervin Knuth")
-}\if{html}{\out{</div>}}
-
-\if{html}{\figure{cli-blockquote.svg}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#>                                                                                 
+#>     <span style="font-style: italic;">“The real problem is that programmers have spent far</span>                        
+#>     <span style="font-style: italic;">too much time worrying about efficiency in the wrong</span>                        
+#>     <span style="font-style: italic;">places and at the wrong times; premature optimization</span>                       
+#>     <span style="font-style: italic;">is the root of all evil (or at least most of it) in</span>                         
+#>     <span style="font-style: italic;">programming.”</span>                                                               
+#>     <span style="font-weight: bold;font-style: italic;">— Donald Ervin Knuth</span>                                                        
+#>                                                                                 
+</pre></div>
+}}
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}

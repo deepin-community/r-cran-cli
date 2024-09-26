@@ -30,11 +30,22 @@ is_interactive <- function() {
 #' @export
 
 cli_output_connection <- function() {
-  if (is_interactive() && no_sink()) stdout() else stderr()
+  if ((is_interactive() || rstudio_stdout()) && no_sink()) stdout() else stderr()
 }
 
 no_sink <- function() {
   sink.number() == 0 && sink.number("message") == 2
+}
+
+rstudio_stdout <- function() {
+  rstudio <- rstudio_detect()
+  rstudio$type %in% c(
+    "rstudio_console",
+    "rstudio_console_starting",
+    "rstudio_build_pane",
+    "rstudio_job",
+    "rstudio_render_pane"
+  )
 }
 
 is_stdout <- function(stream) {
@@ -203,6 +214,7 @@ is_ansi_tty <- function(stream = "auto") {
 #' @export
 
 ansi_hide_cursor <- function(stream = "auto") {
+  if (Sys.getenv("R_CLI_HIDE_CURSOR") == "false") return()
   stream <- get_real_output(stream)
   if (is_ansi_tty(stream)) cat(ANSI_HIDE_CURSOR, file = stream)
 }
@@ -211,6 +223,7 @@ ansi_hide_cursor <- function(stream = "auto") {
 #' @name ansi_hide_cursor
 
 ansi_show_cursor <- function(stream = "auto") {
+  if (Sys.getenv("R_CLI_HIDE_CURSOR") == "false") return()
   stream <- get_real_output(stream)
   if (is_ansi_tty(stream)) cat(ANSI_SHOW_CURSOR, file = stream)
 }
@@ -256,7 +269,7 @@ r_utf8 <- function(func,
   rp$wait(timeout)
   if (rp$is_alive()) {
     rp$kill()
-    stop("R subprocess timeout")
+    throw(cli_error("R subprocess timeout"))
   }
   list(
     status = rp$get_exit_status(),
@@ -271,7 +284,12 @@ fix_r_utf8_output <- function(x) {
   # In case the output is incomplete, and an UTF-8 tag is left open
   if (length(end) < length(beg)) end <- c(end, length(x) + 1L)
 
-  if (length(beg) != length(end)) stop("Invalid output from UTF-8 R")
+  if (length(beg) != length(end)) {
+    throw(cli_error(
+      "Invalid output from UTF-8 R",
+      "i" = "Found {length(beg)} UTF-8 begin marker{?s} and {length(end)} end marker{?s}."
+    ))
+  }
 
   # Easier to handle corner cases with this
   beg <- c(beg, length(x) + 1L)

@@ -4,7 +4,8 @@
 \alias{inline-markup}
 \title{About inline markup in the semantic cli}
 \description{
-About inline markup in the semantic cli
+To learn how to use cli’s semantic markup, start with the ‘Building
+a semantic CLI’ article at \url{https://cli.r-lib.org}.
 }
 \section{Command substitution}{
 
@@ -15,28 +16,42 @@ details.
 
 In addition to regular glue interpolation, cli can also add classes
 to parts of the text, and these classes can be used in themes. For
-example\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_text("This is \{.emph important\}.")
-}\if{html}{\out{</div>}}
+example
 
-\if{html}{\figure{inline-text.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_text("This is \{.emph important\}.")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> This is <span style="font-style: italic;">important</span>.                                                              
+</pre></div>
+}}
+
 
 adds a class to the "important" word, class \code{"emph"}. Note that in this
 case the string within the braces is usually not a valid R expression.
 If you want to mix classes with interpolation, add another pair of
-braces:\if{html}{\out{<div class="sourceCode r">}}\preformatted{adjective <- "great"
-cli_text("This is \{.emph \{adjective\}\}.")
-}\if{html}{\out{</div>}}
+braces:
 
-\if{html}{\figure{inline-text-2.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{adjective <- "great"
+cli_text("This is \{.emph \{adjective\}\}.")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> This is <span style="font-style: italic;">great</span>.                                                                  
+</pre></div>
+}}
+
 
 An inline class will always create a \code{span} element internally. So in
 themes, you can use the \code{span.emph} CSS selector to change how inline
-text is emphasized:\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_div(theme = list(span.emph = list(color = "red")))
+text is emphasized:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_div(theme = list(span.emph = list(color = "red")))
 adjective <- "nice and red"
 cli_text("This is \{.emph \{adjective\}\}.")
-}\if{html}{\out{</div>}}
-
-\if{html}{\figure{inline-text-3.svg}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> This is <span style="font-style: italic;color: #DC322F;">nice and red</span>.                                                           
+</pre></div>
+}}
 }
 
 \section{Classes}{
@@ -50,19 +65,59 @@ The default theme defines the following inline classes:
 \item \code{dt} is used for the terms in a definition list (\code{\link[=cli_dl]{cli_dl()}}).
 \item \code{dd} is used for the descriptions in a definition list (\code{\link[=cli_dl]{cli_dl()}}).
 \item \code{email} for an email address.
+If the terminal supports ANSI hyperlinks (e.g. RStudio, iTerm2, etc.),
+then cli creates a clickable link.
+See \link{links} for more information about cli hyperlinks.
 \item \code{emph} for emphasized text.
 \item \code{envvar} for the name of an environment variable.
 \item \code{field} for a generic field, e.g. in a named list.
-\item \code{file} for a file name.
-\item \code{fun} for a function name.
-\item \code{key} for a keyboard key.
-\item \code{path} for a path (essentially the same as \code{file}).
+\item \code{file} for a file name. If the terminal supports ANSI hyperlinks (e.g.
+RStudio, iTerm2, etc.), then cli creates a clickable link that opens
+the file in RStudio or with the default app for the file type.
+See \link{links} for more information about cli hyperlinks.
+\item \code{fn} for a function name. If it is in the \code{package::function_name}
+form, and the terminal supports ANSI hyperlinks (e.g. RStudio,
+iTerm2, etc.), then cli creates a clickable link.
+See \link{links} for more information about cli hyperlinks.
+\item \code{fun} same as \code{fn}.
+\item \code{help} is a help page of a \emph{function}.
+If the terminal supports ANSI hyperlinks to help pages (e.g. RStudio),
+then cli creates a clickable link. It supports link text.
+See \link{links} for more information about cli hyperlinks.
+\item \code{href} creates a hyperlink, potentially with a link text.
+If the terminal supports ANSI hyperlinks (e.g. RStudio, iTerm2, etc.),
+then cli creates a clickable link.
+See \link{links} for more information about cli hyperlinks.
+\item \code{kbd} for a keyboard key.
+\item \code{key} same as \code{kbd}.
+\item \code{obj_type_friendly} formats the type of an R object in a readable way,
+and it should be used with \code{{}}, see an example below.
+\item \code{or} changes the string that separates the last two elements of
+collapsed vectors (see below) from "and" to "or".
+\item \code{path} for a path (the same as \code{file} in the default theme).
 \item \code{pkg} for a package name.
-\item \code{strong} for strong importance.
-\item \code{url} for a URL.
+\item \code{run} is an R expression, that is potentially clickable if the terminal
+supports ANSI hyperlinks to runnable code (e.g. RStudio).
+It supports link text. See \link{links} for more information about cli hyperlinks.
+\item \code{str} for a double quoted string escaped by \code{\link[base:encodeString]{base::encodeString()}}.#' * \code{strong} for strong importance.
+\item \code{topic} is a help page of a \emph{topic}.
+If the terminal supports ANSI hyperlinks to help pages (e.g. RStudio),
+then cli creates a clickable link. It supports link text.
+See \link{links} for more information about cli hyperlinks.
+\item \code{type} formats the type of an R object in a readable way, and it
+should be used with \code{{}}, see an example below.
+\item \code{url} for a URL. If the terminal supports ANSI hyperlinks (e.g.
+RStudio, iTerm2, etc.), then cli creates a clickable link.
+See \link{links} for more information about cli hyperlinks.
 \item \code{var} for a variable name.
 \item \code{val} for a generic "value".
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{ul <- cli_ul()
+\item \code{vignette} is a vignette.
+If the terminal supports ANSI hyperlinks to help pages (e.g. RStudio),
+then cli creates a clickable link. It supports link text.
+See \link{links} for more information about cli hyperlinks.
+}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{ul <- cli_ul()
 cli_li("\{.emph Emphasized\} text.")
 cli_li("\{.strong Strong\} importance.")
 cli_li("A piece of code: \{.code sum(a) / length(a)\}.")
@@ -71,23 +126,42 @@ cli_li("A function name: \{.fn cli_text\}.")
 cli_li("A keyboard key: press \{.kbd ENTER\}.")
 cli_li("A file name: \{.file /usr/bin/env\}.")
 cli_li("An email address: \{.email bugs.bunny@acme.com\}.")
-cli_li("A URL: \{.url https://acme.com\}.")
+cli_li("A URL: \{.url https://example.com\}.")
 cli_li("An environment variable: \{.envvar R_LIBS\}.")
+cli_li("`mtcars` is \{.obj_type_friendly \{mtcars\}\}")
 cli_end(ul)
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> • <span style="font-style: italic;">Emphasized</span> text.                                                              
+#> • <span style="font-weight: bold;">Strong</span> importance.                                                            
+#> • A piece of code: `sum(a) / length(a)`.                                        
+#> • A package name: <span style="color: #268BD2;">cli</span>.                                                          
+#> • A function name: `cli_text()`.                                                
+#> • A keyboard key: press <span style="color: #268BD2;">[ENTER]</span>.                                                
+#> • A file name: <span style="color: #268BD2;">/usr/bin/env</span>.                                                    
+#> • An email address: <span style="color: #268BD2;">bugs.bunny@acme.com</span>.                                        
+#> • A URL: <span style="font-style: italic;color: #268BD2;">&lt;https://example.com&gt;</span>.                                                 
+#> • An environment variable: `R_LIBS`.                                            
+#> • `mtcars` is a data frame                                                      
+</pre></div>
+}}
 
-\if{html}{\figure{inline-examples.svg}}
 
 You can add new classes by defining them in the theme, and then using
-them.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_div(theme = list(
+them.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_div(theme = list(
   span.myclass = list(color = "lightgrey"),
   "span.myclass" = list(before = "<<"),
   "span.myclass" = list(after = ">>")))
 cli_text("This is \{.myclass in angle brackets\}.")
 cli_end()
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> This is <span style="color: #cccccc;">&lt;&lt;in angle brackets&gt;&gt;</span>.                                                  
+</pre></div>
+}}
 
-\if{html}{\figure{inline-newclass.svg}}
 \subsection{Highlighting weird-looking values}{
 
 Often it is useful to highlight a weird file or path name, e.g. one
@@ -110,25 +184,40 @@ terminals that support ANSI colors.
 
 When cli performs inline text formatting, it automatically collapses
 glue substitutions, after formatting. This is handy to create lists of
-files, packages, etc.\if{html}{\out{<div class="sourceCode r">}}\preformatted{pkgs <- c("pkg1", "pkg2", "pkg3")
+files, packages, etc.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{pkgs <- c("pkg1", "pkg2", "pkg3")
 cli_text("Packages: \{pkgs\}.")
 cli_text("Packages: \{.pkg \{pkgs\}\}.")
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Packages: pkg1, pkg2, and pkg3.                                                 
+#> Packages: <span style="color: #268BD2;">pkg1</span>, <span style="color: #268BD2;">pkg2</span>, and <span style="color: #268BD2;">pkg3</span>.                                                 
+</pre></div>
+}}
 
-\if{html}{\figure{inline-collapse.svg}}
 
-Class names are collapsed differently by default\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- Sys.time()
+Class names are collapsed differently by default
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- Sys.time()
 cli_text("Hey, \{.var x\} has class \{.cls \{class(x)\}\}.")
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Hey, `x` has class <span style="color: #268BD2;">&lt;POSIXct/POSIXt&gt;</span>.                                            
+</pre></div>
+}}
 
-\if{html}{\figure{inline-collapse-2.svg}}
 
 By default cli truncates long vectors. The truncation limit is by default
-one hundred elements, but you can change it with the \code{vec_trunc} style.\if{html}{\out{<div class="sourceCode r">}}\preformatted{nms <- cli_vec(names(mtcars), list(vec_trunc = 5))
-cli_text("Column names: \{nms\}.")
-}\if{html}{\out{</div>}}
+twenty elements, but you can change it with the \code{vec-trunc} style.
 
-\if{html}{\figure{inline-collapse-trunc.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{nms <- cli_vec(names(mtcars), list("vec-trunc" = 5))
+cli_text("Column names: \{nms\}.")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Column names: mpg, cyl, disp, …, gear, and carb.                                
+</pre></div>
+}}
 }
 
 \section{Formatting values}{
@@ -137,6 +226,9 @@ cli_text("Column names: \{nms\}.")
 The \code{val} inline class formats values. By default (c.f. the built-in
 theme), it calls the \code{\link[=cli_format]{cli_format()}} generic function, with the current
 style as the argument. See \code{\link[=cli_format]{cli_format()}} for examples.
+
+\code{str} is for formatting strings, it uses \code{\link[base:encodeString]{base::encodeString()}} with
+double quotes.
 }
 
 \section{Escaping \verb{\{} and \verb{\}}}{
@@ -145,17 +237,27 @@ style as the argument. See \code{\link[=cli_format]{cli_format()}} for examples.
 It might happen that you want to pass a string to \verb{cli_*} functions,
 and you do \emph{not} want command substitution in that string, because it
 might contain \verb{\{} and \verb{\}} characters. The simplest solution for this is
-to refer to the string from a template:\if{html}{\out{<div class="sourceCode r">}}\preformatted{msg <- "Error in if (ncol(dat$y)) \{: argument is of length zero"
-cli_alert_warning("\{msg\}")
-}\if{html}{\out{</div>}}
+to refer to the string from a template:
 
-\if{html}{\figure{inline-escape.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{msg <- "Error in if (ncol(dat$y)) \{: argument is of length zero"
+cli_alert_warning("\{msg\}")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #B58900;">!</span> Error in if (ncol(dat$y)) \{: argument is of length zero                       
+</pre></div>
+}}
+
 
 If you want to explicitly escape \verb{\{} and \verb{\}} characters, just double
-them:\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_alert_warning("A warning with \{\{ braces \}\}.")
-}\if{html}{\out{</div>}}
+them:
 
-\if{html}{\figure{inline-escape-2.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_alert_warning("A warning with \{\{ braces \}\}.")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #B58900;">!</span> A warning with \{ braces \}.                                                    
+</pre></div>
+}}
+
 
 See also examples below.
 }
@@ -163,13 +265,20 @@ See also examples below.
 \section{Pluralization}{
 
 
-All cli commands that emit text support pluralization. Some examples:\if{html}{\out{<div class="sourceCode r">}}\preformatted{ndirs <- 1
-nfiles <- 13
-cli_alert_info("Found \{ndirs\} diretor\{?y/ies\} and \{nfiles\} file\{?s\}.")
-cli_text("Will install \{length(pkgs)\} package\{?s\}: \{.pkg \{pkgs\}\}")
-}\if{html}{\out{</div>}}
+All cli commands that emit text support pluralization. Some examples:
 
-\if{html}{\figure{inline-plural.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{ndirs <- 1
+nfiles <- 13
+pkgs <- c("pkg1", "pkg2", "pkg3")
+cli_alert_info("Found \{ndirs\} director\{?y/ies\} and \{nfiles\} file\{?s\}.")
+cli_text("Will install \{length(pkgs)\} package\{?s\}: \{.pkg \{pkgs\}\}")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #2AA198;">ℹ</span> Found 1 directory and 13 files.                                               
+#> Will install 3 packages: <span style="color: #268BD2;">pkg1</span>, <span style="color: #268BD2;">pkg2</span>, and <span style="color: #268BD2;">pkg3</span>                                   
+</pre></div>
+}}
+
 
 See \link{pluralization} for details.
 }

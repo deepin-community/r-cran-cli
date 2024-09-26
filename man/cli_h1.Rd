@@ -26,10 +26,46 @@ themes.}
 cli has three levels of headings.
 }
 \details{
-This is how the headings look with the default builtin theme.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_h1("Header \{.emph 1\}")
+This is how the headings look with the default builtin theme.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_h1("Header \{.emph 1\}")
 cli_h2("Header \{.emph 2\}")
 cli_h3("Header \{.emph 3\}")
-}\if{html}{\out{</div>}}
-
-\if{html}{\figure{cli-h1.svg}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#>                                                                                 
+#> <span style="color: #2AA198;">──</span> <span style="font-weight: bold;">Header </span><span style="font-weight: bold;font-style: italic;">1</span> <span style="color: #2AA198;">──────────────────────────────────────────────────────────</span>          
+#>                                                                                 
+#> ── <span style="font-weight: bold;">Header </span><span style="font-weight: bold;font-style: italic;">2</span> ──                                                                  
+#>                                                                                 
+#> ── Header <span style="font-style: italic;">3</span>                                                                     
+</pre></div>
+}}
 }
+\seealso{
+These functions supports \link[=inline-markup]{inline markup}.
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}

@@ -17,18 +17,30 @@ It is not wrapped, but printed as is. Long lines will overflow.
 No glue substitution is performed on verbatim text.
 }
 \details{
-\subsection{Line breaks}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_verbatim("This has\\nthree\\nlines,")
-}\if{html}{\out{</div>}}
+\subsection{Line breaks}{
 
-\if{html}{\figure{cli-verbatim.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_verbatim("This has\\nthree\\nlines,")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> This has                                                                        
+#> three                                                                           
+#> lines,                                                                          
+</pre></div>
+}}
+
 }
 
 \subsection{Special characters}{
 
-No glue substitution happens here.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_verbatim("No string \{interpolation\} or \{.emph styling\} here")
-}\if{html}{\out{</div>}}
+No glue substitution happens here.
 
-\if{html}{\figure{cli-verbatim-2.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_verbatim("No string \{interpolation\} or \{.emph styling\} here")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> No string \{interpolation\} or \{.emph styling\} here                               
+</pre></div>
+}}
+
 }
 }
 \seealso{

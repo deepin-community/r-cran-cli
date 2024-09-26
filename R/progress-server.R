@@ -42,7 +42,7 @@
 #'
 #' ### `rstudio`
 #'
-#' Use [RStudio's job panel](https://blog.rstudio.com/2019/03/14/rstudio-1-2-jobs/)
+#' Use [RStudio's job panel](https://posit.co/blog/rstudio-1-2-jobs/)
 #' to show the progress bars. This handler is available at the RStudio console,
 #' in recent versions of RStudio.
 #'
@@ -64,12 +64,13 @@
 #'
 #' ### `shiny`
 #'
-#' Use [shiny's progress bars][shiny::Progress]. This handler is available if a
-#' shiny app is running.
+#' Use [shiny's progress bars](https://shiny.rstudio.com/articles/progress.html).
+#' This handler is available if a shiny app is running.
 #'
 #' @return `cli_progress_builtin_handlers()` returns the names of the
 #' currently supported progress handlers.
 #'
+#' @family progress bar functions
 #' @export
 
 # TODO: examples
@@ -150,7 +151,6 @@ builtin_handler_cli <- list(
 builtin_handler_progressr <- list(
   add = function(bar, .envir) {
     steps <- if (is.na(bar$total)) 0 else bar$total
-    bar$progressr_last <- 0L
     bar$progressr_progressor <- asNamespace("progressr")$progressor(
       steps,
       auto_finish = FALSE,
@@ -161,18 +161,14 @@ builtin_handler_progressr <- list(
   },
 
   set = function(bar, .envir) {
-    amount <- bar$current - bar$progressr_last
-    bar$last <- bar$current
-    if (!is.null(bar$progressr_progressor) && amount > 0) {
-      bar$progressr_progressor(amount = amount)
+    if (!is.null(bar$progressr_progressor)) {
+      bar$progressr_progressor(step = bar$current)
     }
   },
 
   complete = function(bar, .envir, result) {
-    amount <- bar$current - bar$progressr_last
-    bar$last <- bar$current
-    if (!is.null(bar$progressr_progressor) && amount > 0) {
-      bar$progressr_progressor(amount = amount, type = "finish")
+    if (!is.null(bar$progressr_progressor)) {
+      bar$progressr_progressor(step = bar$current, type = "finish")
     }
   },
 
@@ -286,7 +282,7 @@ builtin_handler_rstudio <- list(
         bar$rstudio_status <- bar$status
       }
     } else {
-      status <- fmt(
+      status <- cli_fmt(
         cli_text(bar$format, .envir = .envir),
         collapse = TRUE,
         strip_newline = TRUE
@@ -312,7 +308,7 @@ shiny_detail <- function(bar, .envir) {
   status <- if (is.null(bar$format_orig)) {
     bar$status %||% ""
   } else {
-    fmt(
+    cli_fmt(
       cli_text(bar$format, .envir = .envir),
       collapse = TRUE,
       strip_newline = TRUE
@@ -335,12 +331,12 @@ last_lines <- function(txt, keep = 5) {
 
 builtin_handler_shiny <- list(
   able = function(bar, .envir) {
-    "shiny" %in% loadedNamespaces() && shiny::isRunning()
+    "shiny" %in% loadedNamespaces() && asNamespace("shiny")$isRunning()
   },
 
   add = function(bar, .envir) {
-    bar$shiny_progress <- shiny::Progress$new(
-      shiny::getDefaultReactiveDomain(),
+    bar$shiny_progress <- asNamespace("shiny")$Progress$new(
+      asNamespace("shiny")$getDefaultReactiveDomain(),
       min = 0,
       max = bar$total
     )

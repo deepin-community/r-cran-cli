@@ -22,7 +22,9 @@ used here, including progress variables.
 }
 \details{
 The text is passed to the progress handler(s), that may or may not be
-able to print it.\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
+able to print it.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fun <- function() \{
   cli_alert_info("Before the progress bar")
   cli_progress_bar("Calculating", total = 100)
   for (i in 1:50) \{
@@ -41,3 +43,41 @@ fun()
 
 \if{html}{\figure{progress-output2.svg}}
 }
+\seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
+Other progress bar functions: 
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_builtin_handlers}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_num}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_progress_styles}()},
+\code{\link{progress-variables}}
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
+}
+\concept{functions supporting inline markup}
+\concept{progress bar functions}

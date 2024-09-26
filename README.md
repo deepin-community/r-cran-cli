@@ -1,19 +1,18 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 cli
-===
+================
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 > Helpers for Developing Command Line Interfaces
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/r-lib/cli/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/cli/actions)
+[![R-CMD-check](https://github.com/r-lib/cli/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/cli/actions/workflows/R-CMD-check.yaml)
 [![](https://www.r-pkg.org/badges/version/cli)](https://www.r-pkg.org/pkg/cli)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/cli)](https://www.r-pkg.org/pkg/cli)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/r-lib/cli/master.svg)](https://codecov.io/github/r-lib/cli?branch=master)
+[![Codecov test
+coverage](https://codecov.io/gh/r-lib/cli/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/cli?branch=main)
 <!-- badges: end -->
 
 A suite of tools to build attractive command line interfaces (CLIs),
@@ -25,22 +24,20 @@ styles.
 
 ------------------------------------------------------------------------
 
-Features
-========
+# Features
 
--   Build a CLI using semantic elements: headings, lists, alerts,
-    paragraphs.
--   Theming via a CSS-like language.
--   Terminal colors and font styles.
--   All cli text can contain interpreted string literals, via the
-    [glue](https://github.com/tidyverse/glue) package.
--   Progress bars from R and C code.
--   Error and warning messages with rich text formatting.
--   Support for pluralized messages.
--   ANSI styled string manipulation.
+- Build a CLI using semantic elements: headings, lists, alerts,
+  paragraphs.
+- Theming via a CSS-like language.
+- Terminal colors and font styles.
+- All cli text can contain interpreted string literals, via the
+  [glue](https://github.com/tidyverse/glue) package.
+- Progress bars from R and C code.
+- Error and warning messages with rich text formatting.
+- Support for pluralized messages.
+- ANSI styled string manipulation.
 
-Installation
-============
+# Installation
 
 Install the stable version from CRAN:
 
@@ -48,12 +45,17 @@ Install the stable version from CRAN:
 install.packages("cli")
 ```
 
-Short tour
-----------
+Install the development version from GitHub:
+
+``` r
+pak::pak("r-lib/cli")
+```
+
+# Short tour
 
 Some of the more commonly used cli elements, and features.
 
-### Short alert messages
+## Short alert messages
 
 One liner messages to inform or warn.
 
@@ -62,34 +64,47 @@ pkgs <- c("foo", "bar", "foobar")
 cli_alert_success("Downloaded {length(pkgs)} packages.")
 ```
 
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/alert-success-dark.svg">
 <img src="man/figures/README/alert-success.svg" width="100%" />
+</picture>
 
 ``` r
 db_url <- "example.com:port"
 cli_alert_info("Reopened database {.url {db_url}}.")
 ```
 
-<img src="man/figures/README/alert-info.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/alert-info-dark.svg">
+<img src="man/figures/README/alert-info.svg" width="100%" /> </picture>
 
 ``` r
 cli_alert_warning("Cannot reach GitHub, using local database cache.")
 ```
 
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/alert-warning-dark.svg">
 <img src="man/figures/README/alert-warning.svg" width="100%" />
+</picture>
 
 ``` r
 cli_alert_danger("Failed to connect to database.")
 ```
 
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/alert-danger-dark.svg">
 <img src="man/figures/README/alert-danger.svg" width="100%" />
+</picture>
 
 ``` r
 cli_alert("A generic alert")
 ```
 
-<img src="man/figures/README/alert.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/alert-dark.svg">
+<img src="man/figures/README/alert.svg" width="100%" /> </picture>
 
-### Headings
+## Headings
 
 Three levels of headings.
 
@@ -97,21 +112,27 @@ Three levels of headings.
 cli_h1("Heading 1")
 ```
 
-<img src="man/figures/README/h1.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/h1-dark.svg">
+<img src="man/figures/README/h1.svg" width="100%" /> </picture>
 
 ``` r
 cli_h2("Heading 2")
 ```
 
-<img src="man/figures/README/h2.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/h2-dark.svg">
+<img src="man/figures/README/h2.svg" width="100%" /> </picture>
 
 ``` r
 cli_h3("Heading 3")
 ```
 
-<img src="man/figures/README/h3.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/h3-dark.svg">
+<img src="man/figures/README/h3.svg" width="100%" /> </picture>
 
-### Lists
+## Lists
 
 Ordered, unordered and description lists, that can be nested.
 
@@ -129,9 +150,11 @@ fun <- function() {
 fun()
 ```
 
-<img src="man/figures/README/lists.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/lists-dark.svg">
+<img src="man/figures/README/lists.svg" width="100%" /> </picture>
 
-### Themes
+## Themes
 
 Theming via a CSS-like language.
 
@@ -145,9 +168,11 @@ fun <- function() {
 fun()
 ```
 
-<img src="man/figures/README/themes.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/themes-dark.svg">
+<img src="man/figures/README/themes.svg" width="100%" /> </picture>
 
-### Command substitution
+## Command substitution
 
 Automatic command substitution via the
 [glue](https://github.com/tidyverse/glue) package.
@@ -160,9 +185,11 @@ cli_alert_info(c(
   "{prettyunits::pretty_sec(dt)}"))
 ```
 
-<img src="man/figures/README/glue.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/glue-dark.svg">
+<img src="man/figures/README/glue.svg" width="100%" /> </picture>
 
-### Pluralization
+## Pluralization
 
 Pluralization support.
 
@@ -172,9 +199,11 @@ ndirs <- 1
 cli_alert_info("Found {nfiles} file{?s} and {ndirs} director{?y/ies}.")
 ```
 
-<img src="man/figures/README/plurals.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/plurals-dark.svg">
+<img src="man/figures/README/plurals.svg" width="100%" /> </picture>
 
-### Progress bars
+## Progress bars
 
 ``` r
 clean <- function() {
@@ -187,16 +216,22 @@ clean <- function() {
 clean()
 ```
 
-<img src="man/figures/README/progress.svg" width="100%" />
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/README/progress-dark.svg">
+<img src="man/figures/README/progress.svg" width="100%" /> </picture>
 
-Documentation
--------------
+# Documentation
 
 See at
 [`https://cli.r-lib.org/`](https://cli.r-lib.org/reference/index.html)
 and also in the installed package: `help(package = "cli")`.
 
-License
-=======
+# Code of Conduct
 
-MIT © RStudio
+Please note that the cli project is released with a [Contributor Code of
+Conduct](https://cli.r-lib.org/dev/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.
+
+# License
+
+MIT © Posit Software, PBC

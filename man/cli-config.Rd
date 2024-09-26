@@ -12,10 +12,25 @@ cli environment variables and options
 These are environment variables and options that uses may set, to modify
 the behavior of cli.
 \subsection{User facing environment variables}{
+\subsection{\code{R_CLI_HYPERLINK_MODE}}{
+
+Set to \code{posix} to force generating POSIX compatible ANSI hyperlinks.
+If not set, then RStudio compatible links are generated. This is a
+temporary crutch until RStudio handles POSIX hyperlinks correctly, and
+after that it will be removed.
+}
+
 \subsection{\code{NO_COLOR}}{
 
 Set to a nonempty value to turn off ANSI colors.
 See \code{\link[=num_ansi_colors]{num_ansi_colors()}}.
+}
+
+\subsection{\code{ESS_BACKGROUND_MODE}}{
+
+Set this environment variable to \code{light} or \code{dark} to indicate dark mode
+in Emacs. Once https://github.com/emacs-ess/ESS/pull/1178 is merged, ESS
+will set this automatically.
 }
 
 \subsection{\code{R_CLI_DYNAMIC}}{
@@ -31,6 +46,14 @@ Set to a positive integer to assume a given number of colors.
 See \code{\link[=num_ansi_colors]{num_ansi_colors()}}.
 }
 
+\subsection{\code{R_CLI_HYPERLINKS}}{
+
+Set to \code{true}, \code{TRUE} or \code{True} to tell cli that the terminal supports
+ANSI hyperlinks.
+Set to anything else to assume no hyperlink support.
+See \code{\link[=style_hyperlink]{style_hyperlink()}}.
+}
+
 }
 
 \subsection{User facing options}{
@@ -40,6 +63,13 @@ Set to \code{true}, \code{TRUE} or \code{True} to assume a terminal that support
 control sequences.
 Set to anything else to assume a non-ANSI terminal.
 See \code{\link[=is_ansi_tty]{is_ansi_tty()}}.
+}
+
+\subsection{\code{cli.condition_unicode_bullets}}{
+
+\code{TRUE} or \code{FALSE} to force turn on or off the Unicode symbols when printing
+conditions. E.g. in \code{format_error()}, \code{format_warning()}, \code{format_message()} and
+also in \code{cli_abort()}, \code{cli_warn()} and \code{cli_inform()}.
 }
 
 \subsection{\code{cli.condition_width}}{
@@ -54,6 +84,30 @@ over \code{cli.width}.
 
 General handler function for all cli conditions.
 See \url{https://cli.r-lib.org/articles/semantic-cli.html#cli-messages-1}
+}
+
+\subsection{\code{cli.default_num_colors}}{
+
+Default number of ANSI colors. This value is used if the number of colors
+is not already set by
+\itemize{
+\item the \code{cli.num_colors} option,
+\item the \code{R_CLI_NUM_COLORS} environment variable,
+\item the \code{crayon.enabled} and \code{crayon.colors} options,
+\item the \code{NO_COLOR} environment variable,
+\item the \code{knitr.in.progress} option,
+\item a \code{sink()} call for the stream.
+}
+
+You can also use this option if color support is detected correctly, but
+you want to adjust the number of colors. E.g.
+\itemize{
+\item if \code{crayon.enabled} is \code{TRUE}, but \code{crayon.colors} is not,
+\item in Emacs on Windows,
+\item in terminals.
+}
+
+See \code{\link[=num_ansi_colors]{num_ansi_colors()}}. See also the \code{cli.num_colors} option.
 }
 
 \subsection{\code{cli.dynamic}}{
@@ -77,9 +131,16 @@ Set to anything else to assume no hyperlink support.
 See \code{\link[=style_hyperlink]{style_hyperlink()}}.
 }
 
+\subsection{\code{cli.ignore_unknown_rstudio_theme}}{
+
+Set to \code{TRUE} to omit a warning for an unknown RStudio theme in
+\code{code_highlight()}.
+}
+
 \subsection{\code{cli.num_colors}}{
 
-Number of ANSI colors. See \code{\link[=num_ansi_colors]{num_ansi_colors()}}.
+Number of ANSI colors. See \code{\link[=num_ansi_colors]{num_ansi_colors()}}. See also the
+\code{cli.default_num_colors} option.
 }
 
 \subsection{\code{cli.message_class}}{
@@ -191,6 +252,8 @@ See \code{\link[=cli_progress_builtin_handlers]{cli_progress_builtin_handlers()}
 
 Delay before showing a progress bar, in seconds.
 Progress bars that finish before this delay are not shown at all.
+cli also shows progress bars that have more than 50\% to go after half of
+this delay has passed.
 }
 
 \subsection{\code{cli.spinner}}{
@@ -215,7 +278,7 @@ This option in intended for the package developers.
 See \link{themes} and \code{\link[=start_app]{start_app()}}.
 }
 
-\subsection{\code{cli_theme_dark}}{
+\subsection{\code{cli.theme_dark}}{
 
 Whether cli should assume a dark theme for the builtin theme.
 See \code{\link[=builtin_theme]{builtin_theme()}}.
@@ -233,6 +296,13 @@ See \code{\link[=is_utf8_output]{is_utf8_output()}}.
 cli user theme.
 This option is intended for end users.
 See \link{themes}.
+}
+
+\subsection{\code{cli.warn_inline_newlines}}{
+
+Whether to emit a warning when cli replaces newline characters with
+spaces within a \code{{.class }} inline style.
+Defaults to \code{FALSE}.
 }
 
 \subsection{\code{cli.width}}{
