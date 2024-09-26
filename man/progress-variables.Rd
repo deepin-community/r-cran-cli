@@ -62,121 +62,171 @@ or \code{cli::pb_bar} if you do not attach the cli package.
 \subsection{\code{pb_bar}}{
 
 Creates a visual progress bar. If the number of total units
-is unknown, then it will return an empty string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+is unknown, then it will return an empty string.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "Fitting model \{cli::pb_bar\} \{cli::pb_percent\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Fitting model <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37;                             
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-bar.svg}}
 }
 
 \subsection{\code{pb_current}}{
 
-The number of current progress units.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The number of current progress units.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_spin\} Reading file \{cli::pb_current\}/\{cli::pb_total\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ⠙ Reading file 66/100                                                           
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-current.svg}}
 }
 
 \subsection{\code{pb_current_bytes}}{
 
 The number of current progress units formatted as bytes.
-The output has a constant width of six characters.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The output has a constant width of six characters.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   format = "Got \{cli::pb_current_bytes\} in \{cli::pb_elapsed\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Got 524 kB in 5s                                                                
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-current-bytes.svg}}
 }
 
 \subsection{\code{pb_elapsed}}{
 
 The elapsed time since the start of the progress bar. The time is
 measured since the progress bar was created with \code{\link[=cli_progress_bar]{cli_progress_bar()}}
-or similar.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+or similar.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\} [\{cli::pb_elapsed\}]"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37; [5s]                                      
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-elapsed.svg}}
 }
 
 \subsection{\code{pb_elapsed_clock}}{
 
-The elapsed time, in \verb{hh::mm::ss} format.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The elapsed time, in \verb{hh::mm::ss} format.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\} [\{cli::pb_elapsed_clock\}]"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37; [00:00:05]                                
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-elapsed-clock.svg}}
 }
 
 \subsection{\code{pb_elapsed_raw}}{
 
-The number of seconds since the start of the progress bar.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The number of seconds since the start of the progress bar.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\} [\{round(cli::pb_elapsed_raw)\}s]"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37; [5s]                                      
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-elapsed-raw.svg}}
 }
 
 \subsection{\code{pb_eta}}{
 
 The estimated time until the end of the progress bar,
-in human readable form.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+in human readable form.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\} | ETA: \{cli::pb_eta\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37; | ETA:  3s                                
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-eta.svg}}
 }
 
 \subsection{\code{pb_eta_raw}}{
 
 The estimated time until the end of the progress
 bar, in seconds. This is useful if you want to adjust the default
-\code{pb_eta} display.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+\code{pb_eta} display.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\} | ETA: \{round(cli::pb_eta_raw)\}s"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37; | ETA: 3s                                 
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-eta-raw.svg}}
 }
 
 \subsection{\code{pb_eta_str}}{
 
 The estimated time until the end of the progress bar.
 It includes the \code{"ETA:"} prefix. It is only shown if the time can be
-estimated, otherwise it is the empty string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+estimated, otherwise it is the empty string.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\} | \{cli::pb_eta_str\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37; | ETA:  3s                                
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-eta-str.svg}}
 }
 
 \subsection{\code{pb_extra}}{
 
 \code{pb_extra} can be used to access extra data, see the \code{extra} argument
-of \code{cli_progress_bar()} and \code{cli_progress_update()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+of \code{cli_progress_bar()} and \code{cli_progress_update()}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   extra = list(user = whoami::username()),
   format = "Cleaning cache for user '\{cli::pb_extra$user\}': \{cli::pb_current_bytes\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Cleaning cache for user 'gaborcsardi': 161 MB                                   
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-extra.svg}}
 }
 
 \subsection{\code{pb_id}}{
@@ -186,39 +236,54 @@ The id of the progress bar. The id has the format
 \verb{<counter>} is an integer counter that is incremented every time
 cli needs a new unique id.
 
-This is useful for debugging progress bars.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+This is useful for debugging progress bars.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   format = "Progress bar '\{cli::pb_id\}' is at \{cli::pb_current\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Progress bar 'cli-82040-1814' is at 64                                          
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-id.svg}}
 }
 
 \subsection{\code{pb_name}}{
 
 The name of the progress bar. This is supplied by the
 developer, and it is by default the empty string. A space character
-is added to non-empty names.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+is added to non-empty names.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   name = "Loading training data",
   total = 100,
   format = "\{cli::pb_name\} \{cli::pb_bar\} \{cli::pb_percent\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Loading training data  <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37;                    
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-name.svg}}
 }
 
 \subsection{\code{pb_percent}}{
 
 The percentage of the progress bar, always formatted
 in three characters plus the percentage sign. If the total number of
-units is unknown, then it is \code{" NA\%"}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+units is unknown, then it is \code{" NA\%"}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_bar\} \{cli::pb_percent\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #859900;">█████████████████████</span><span style="color: #002B36;">██████████</span><span style="color: #859900;"> </span>  66&#37;                                           
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-percent.svg}}
 }
 
 \subsection{\code{pb_pid}}{
@@ -229,93 +294,145 @@ aggregating logging output or progress results from multiple processes.
 
 \subsection{\code{pb_rate}}{
 
-The progress rate, in number of units per second, formatted in a string.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The progress rate, in number of units per second, formatted in a string.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 156,
   format = "Reading input files \{pb_current\}/\{pb_total\} [\{pb_rate\}]"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Reading input files 68/156 [14/s]                                               
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-rate.svg}}
 }
 
 \subsection{\code{pb_rate_raw}}{
 
-The raw progress rate, in number of units per second.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The raw progress rate, in number of units per second.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 156,
   format = "Reading input files \{pb_current\}/\{pb_total\} [\{round(pb_rate_raw)\}/s]"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Reading input files 68/156 [14/s]                                               
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-rate-raw.svg}}
 }
 
 \subsection{\code{pb_rate_bytes}}{
 
-The progress rate, formatted as bytes per second, in human readable form.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+The progress rate, formatted as bytes per second, in human readable form.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 256 * 1024 * 1014,
   format = paste0(
     "Reading data \{pb_current_bytes\}/\{pb_total_bytes\} ",
     "[\{ansi_trimws(pb_rate_bytes)\}]"
   )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Reading data  70 MB/266 MB [14 MB/s]                                            
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-rate-bytes.svg}}
 }
 
 \subsection{\code{pb_spin}}{
 
-A spinner. The default spinner is selected via a \code{\link[=get_spinner]{get_spinner()}} call.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+A spinner. The default spinner is selected via a \code{\link[=get_spinner]{get_spinner()}} call.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_spin\} Reading file \{cli::pb_current\}/\{cli::pb_total\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ⠙ Reading file 66/100                                                           
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-current.svg}}
 }
 
 \subsection{\code{pb_status}}{
 
 The status string of the progress bar. By default this is an empty
 string, but it is possible to set it in \code{\link[=cli_progress_bar]{cli_progress_bar()}}
-and `cli_progress_update()].\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(status = "Connecting...")
-}\if{html}{\out{</div>}}
+and `cli_progress_update()].
 
-\if{html}{\figure{progress-var-status.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(status = "Connecting...")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ⠙ Connecting... 0 done (0/s) | 1s                                               
+</pre></div>
+}}
+
 }
 
 \subsection{\code{pb_timestamp}}{
 
-A time stamp for the current time in ISO 8601 format.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+A time stamp for the current time in ISO 8601 format.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   "Loading training data files",
   format = "\{pb_timestamp\} \{pb_current\} (\{pb_rate\})"
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> 2022-09-07T11:27:50+00:00 125 (25/s)                                            
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-timestamp.svg}}
 }
 
 \subsection{\code{pb_total}}{
 
 The total number of progress units, or \code{NA} if the number of units is
-unknown.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+unknown.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 100,
   format = "\{cli::pb_spin\} Reading file \{cli::pb_current\}/\{cli::pb_total\}"
 )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ⠙ Reading file 66/100                                                           
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-current.svg}}
 }
 
 \subsection{\code{pb_total_bytes}}{
 
 The total number of progress units, formatted as
-bytes, in a human readable format.\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
+bytes, in a human readable format.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cli_progress_bar(
   total = 256 * 1024 * 1014,
   format = paste0(
     "Reading data \{pb_current_bytes\}/\{pb_total_bytes\} ",
     "[\{ansi_trimws(pb_rate_bytes)\}]"
   )
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Reading data  70 MB/266 MB [14 MB/s]                                            
+</pre></div>
+}}
 
-\if{html}{\figure{progress-var-rate-bytes.svg}}
 }
 }
+\seealso{
+Other progress bar functions: 
+\code{\link{cli_progress_along}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_builtin_handlers}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_num}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_progress_styles}()}
+}
+\concept{progress bar functions}

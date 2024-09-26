@@ -174,13 +174,13 @@ style_no_bg_color(...)
 \code{paste0()}, before applying the style function.}
 }
 \value{
-An ANSI string (class \code{ansi_string}), that contains ANSI
+An ANSI string (class \code{cli_ansi_string}), that contains ANSI
 sequences, if the current platform supports them. You can simply
 use \code{cat()} to print them to the terminal.
 }
 \description{
 cli has a number of functions to color and style text at the command
-line. They provide a mode modern interface than the crayon package.
+line. They provide a more modern interface than the crayon package.
 }
 \details{
 The \verb{col_*} functions change the (foreground) color to the text.

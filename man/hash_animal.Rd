@@ -2,14 +2,23 @@
 % Please edit documentation in R/hash.R
 \name{hash_animal}
 \alias{hash_animal}
+\alias{hash_raw_animal}
+\alias{hash_obj_animal}
 \title{Adjective-animal hash}
 \usage{
 hash_animal(x, n_adj = 2)
+
+hash_raw_animal(x, n_adj = 2)
+
+hash_obj_animal(x, n_adj = 2, serialize_version = 2)
 }
 \arguments{
 \item{x}{Character vector. \code{NA} entries will have an \code{NA} hash.}
 
-\item{n_adj}{Number of adjectives to use. It must be between 0 and 3.}
+\item{n_adj}{Number of adjectives to use. It must be from 0 through 3.}
+
+\item{serialize_version}{Workspace format version to use, see
+\code{\link[base:serialize]{base::serialize()}}.}
 }
 \value{
 A data frame with columns
@@ -17,6 +26,13 @@ A data frame with columns
 \item \code{hash}: the hash value, a string.
 \item \code{words}: list column with the adjectives and the animal name in a
 character vector.
+}
+
+\code{hash_raw_animal()} and \code{hash_obj_animal()} return a list
+with entries:
+\itemize{
+\item \code{hash}: the hash value, a string,
+\item `words: the adjectives and the animal name in a character vector.
 }
 }
 \description{
@@ -28,7 +44,7 @@ hash of the input, and converts them into an adjective-animal form to
 create a human readable hash.
 \subsection{Number of possible hash values}{
 
-\code{hash_animals()} uses 1748 animal names and
+\code{hash_animal()} uses 1748 animal names and
 8946 different adjectives. The number of
 different hashes you can get for different values of \code{n_adj}:\tabular{rr}{
    \code{n_adj} \tab size of the hash table space \cr
@@ -45,8 +61,14 @@ different hashes you can get for different values of \code{n_adj}:\tabular{rr}{
 The list of adjectives and animals comes from the ids package,
 and in turn from
 \url{https://github.com/a-type/adjective-adjective-animal}, and
-from \url{https://gfycat.com}.
+from \verb{https://gfycat.com} (now gone).
 }
+
+\code{hash_raw_animal()} calculates the adjective-animal hash of
+the bytes of a raw vector.
+
+\code{hash_obj_animal()} calculates the adjective-animal hash of
+an R object. The object is serialized into a binary vector first.
 }
 \examples{
 hash_animal(c("foo", "bar"))
@@ -62,6 +84,8 @@ the ids package for generating random adjective-animal ids
 
 Other hash functions: 
 \code{\link{hash_emoji}()},
-\code{\link{hash_md5}()}
+\code{\link{hash_md5}()},
+\code{\link{hash_sha1}()},
+\code{\link{hash_sha256}()}
 }
 \concept{hash functions}

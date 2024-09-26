@@ -2,20 +2,49 @@
 % Please edit documentation in R/hash.R
 \name{hash_md5}
 \alias{hash_md5}
+\alias{hash_raw_md5}
+\alias{hash_obj_md5}
+\alias{hash_file_md5}
 \title{MD5 hash}
 \usage{
 hash_md5(x)
+
+hash_raw_md5(x)
+
+hash_obj_md5(x, serialize_version = 2)
+
+hash_file_md5(paths)
 }
 \arguments{
 \item{x}{Character vector. If not a character vector, then
 \code{\link[=as.character]{as.character()}} is used to try to coerce it into one. \code{NA} entries
 will have an \code{NA} hash.}
+
+\item{serialize_version}{Workspace format version to use, see
+\code{\link[base:serialize]{base::serialize()}}.}
+
+\item{paths}{Character vector of file names.}
 }
 \value{
-Character vector of hexadecimal MD5 hashes.
+\code{hash_md5()} returns a character vector of hexadecimal MD5
+hashes.
+
+\code{hash_raw_md5()} returns a character scalar.
+
+\code{hash_obj_md5()} returns a character scalar.
 }
 \description{
 Calculate the MD5 hash of each element of a character vector.
+}
+\details{
+\code{hash_raw_md5()} calculates the MD5 hash of the bytes
+of a raw vector.
+
+\code{hash_obj_md5()} calculates the MD5 hash of an R
+object. The object is serialized into a binary vector first.
+
+\code{hash_file_md5()} calculates the MD5 hash of one or more
+files.
 }
 \examples{
 hash_md5(c("foo", NA, "bar", ""))
@@ -26,6 +55,8 @@ files.
 
 Other hash functions: 
 \code{\link{hash_animal}()},
-\code{\link{hash_emoji}()}
+\code{\link{hash_emoji}()},
+\code{\link{hash_sha1}()},
+\code{\link{hash_sha256}()}
 }
 \concept{hash functions}

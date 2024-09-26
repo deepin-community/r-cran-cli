@@ -1,4 +1,7 @@
 
+# this is install time
+# nocov start
+
 palette_idx <- function(id) {
   ifelse(
     id < 38,
@@ -55,14 +58,14 @@ ansi_builtin_styles <- list(
   bg_cyan = palette_color(list(46, 49)),
   bg_white = palette_color(list(47, 49)),
 
-  bg_br_black = palette_color(list(100, 39)),
-  bg_br_red = palette_color(list(101, 39)),
-  bg_br_green = palette_color(list(102, 39)),
-  bg_br_yellow = palette_color(list(103, 39)),
-  bg_br_blue = palette_color(list(104, 39)),
-  bg_br_magenta = palette_color(list(105, 39)),
-  bg_br_cyan = palette_color(list(106, 39)),
-  bg_br_white = palette_color(list(107, 39)),
+  bg_br_black = palette_color(list(100, 49)),
+  bg_br_red = palette_color(list(101, 49)),
+  bg_br_green = palette_color(list(102, 49)),
+  bg_br_yellow = palette_color(list(103, 49)),
+  bg_br_blue = palette_color(list(104, 49)),
+  bg_br_magenta = palette_color(list(105, 49)),
+  bg_br_cyan = palette_color(list(106, 49)),
+  bg_br_white = palette_color(list(107, 49)),
 
   # similar to reset, but only for a single property
   no_bold          = list(c(0,     23, 24, 27, 28, 29, 39, 49), 22),
@@ -77,6 +80,8 @@ ansi_builtin_styles <- list(
   bg_none          = list(c(0, 22, 23, 24, 27, 28, 29, 39    ), 49),
   no_bg_color      = list(c(0, 22, 23, 24, 27, 28, 29, 39    ), 49)
 )
+
+# nocov end
 
 is_builtin_style <- function(x) {
   is_string(x) && x %in% names(ansi_builtin_styles)
@@ -124,7 +129,7 @@ create_ansi_style_fun <- function(styles) {
   fun <- eval(substitute(function(...) {
     txt <- paste0(...)
     nc <- num_ansi_colors()
-    if (nc > 1) {
+    if (nc > 1 && length(txt) > 0) {
       mystyles <- .styles
       for (st in rev(mystyles)) {
         if (!is.null(st$palette)) st <- get_palette_color(st, nc)
@@ -135,11 +140,11 @@ create_ansi_style_fun <- function(styles) {
         )
       }
     }
-    class(txt) <- c("ansi_string", "character")
+    class(txt) <- c("cli_ansi_string", "ansi_string", "character")
     txt
   }, list(.styles = styles)))
 
-  class(fun) <- "ansi_style"
+  class(fun) <- c("cli_ansi_style", "ansi_style")
   attr(fun, "_styles") <- styles
   fun
 }
@@ -154,8 +159,8 @@ create_ansi_style <- function(name, open = NULL, close = NULL) {
 
 #' @export
 
-print.ansi_string <- function(x, ...) {
-  cat("<ansi_string>\n")
+print.cli_ansi_string <- function(x, ...) {
+  cat("<cli_ansi_string>\n")
   if (length(x)) {
     cat(format(paste0("[", seq_along(x), "] ", format(x))), sep = "\n")
   }
@@ -164,8 +169,8 @@ print.ansi_string <- function(x, ...) {
 
 #' @export
 
-print.ansi_style <- function(x, ...) {
-  cat("<ansi_style>\n")
+print.cli_ansi_style <- function(x, ...) {
+  cat("<cli_ansi_style>\n")
   cat(x("Example output"))
   cat("\n")
   invisible(x)
@@ -189,7 +194,7 @@ print.ansi_style <- function(x, ...) {
 #'
 #' @details
 #' The `...` style argument can be any of the following:
-#' * A cli ANSI style function of class `ansi_style`. This is returned
+#' * A cli ANSI style function of class `cli_ansi_style`. This is returned
 #'   as is, without looking at the other arguments.
 #' * An R color name, see [grDevices::colors()].
 #' * A 6- or 8-digit hexadecimal color string, e.g. `#ff0000` means
@@ -219,7 +224,7 @@ make_ansi_style <- function(..., bg = FALSE, grey = FALSE,
                             colors = num_ansi_colors()) {
 
   style <- list(...)[[1]]
-  if (inherits(style, "ansi_style")) return(style)
+  if (inherits(style, "cli_ansi_style")) return(style)
   if (inherits(style, "crayon")) {
     return(create_ansi_style_fun(attr(style, "_styles")))
   }
@@ -228,10 +233,21 @@ make_ansi_style <- function(..., bg = FALSE, grey = FALSE,
 
   orig_style_name <- style_name <- names(args)[1]
 
-  stopifnot(is.character(style) && length(style) == 1 ||
-            is_rgb_matrix(style) && ncol(style) == 1,
-            is.logical(bg) && length(bg) == 1,
-            is.numeric(colors) && length(colors) == 1)
+  stop_if_not(
+    is.character(style) && length(style) == 1 ||
+    is_rgb_matrix(style) && ncol(style) == 1,
+    message = c(
+      "{.arg style} must be an ANSI style",
+      "i" = paste(
+        "an ANSI style is a character scalar (cli style name, RGB or R color",
+        "name), or a [3x1] or [4x1] numeric RGB matrix"),
+      "i" = "{.arg style} is {.type {style}}"
+    )
+  )
+  stopifnot(
+    is.logical(bg) && length(bg) == 1,
+    is.numeric(colors) && length(colors) == 1
+  )
 
   ansi_seqs <- if (is_builtin_style(style)) {
     if (bg && substr(style, 1, 3) != "bg_") {
@@ -245,10 +261,21 @@ make_ansi_style <- function(..., bg = FALSE, grey = FALSE,
     ansi_style_from_r_color(style, bg, colors, grey)
 
   } else if (is_rgb_matrix(style)) {
+    if (is.null(style_name)) {
+      style_name <- paste0(
+        c("rgb", style, if (bg) "-bg", if (grey) "-grey"),
+        collapse = "-"
+      )
+    }
     ansi_style_from_rgb(style, bg, colors, grey)
 
   } else {
-    stop("Unknown style specification: ", style)
+    throw(cli_error(
+      "Unknown style specification: {.val style}, it must be one of",
+      "*" = "a builtin cli style, e.g. {.val bold} or {.val red},",
+      "*" = "an R color name, see {.help grDevices::colors}.",
+      "*" = "a [3x1] or [4x1] numeric RGB matrix with, range 0-255."
+    ))
   }
 
   create_ansi_style(style_name, ansi_seqs$open, ansi_seqs$close)
@@ -293,7 +320,7 @@ bgcodes <- c(paste0('\x1b[48;5;', 0:255, 'm'), '\x1b[49m')
 rgb_index <- 17:232
 gray_index <- 233:256
 reset_index <- 257
-#nocov end
+# nocov end
 
 ansi_scale <- function(x, from = c(0, 255), to = c(0, 5), round = TRUE) {
   y <- (x - from[1]) /

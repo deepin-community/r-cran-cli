@@ -23,6 +23,19 @@ make_quantity <- function(object) {
 #'   an expression that sets the pluralization quantity without printing
 #'   anything. See examples below.
 #'
+#' @examples
+#' nfile <- 0; cli_text("Found {no(nfile)} file{?s}.")
+#'
+#' #> Found no files.
+#'
+#' nfile <- 1; cli_text("Found {no(nfile)} file{?s}.")
+#'
+#' #> Found 1 file.
+#'
+#' nfile <- 2; cli_text("Found {no(nfile)} file{?s}.")
+#'
+#' #> Found 2 files.
+#'
 #' @export
 #' @family pluralization
 
@@ -116,11 +129,13 @@ post_process_plurals <- function(str, values) {
 #'
 #' See [pluralization] and some examples below.
 #'
+#' You need to install the glue package to use this function.
+#'
 #' @param ...,.envir,.transformer All arguments are passed to [glue::glue()].
 #'
 #' @export
 #' @family pluralization
-#' @examples
+#' @examplesIf requireNamespace("glue", quietly = TRUE)
 #' # Regular plurals
 #' nfile <- 0; pluralize("Found {nfile} file{?s}.")
 #' nfile <- 1; pluralize("Found {nfile} file{?s}.")
@@ -183,6 +198,6 @@ pluralize <- function(..., .envir = parent.frame(),
     }
   }
 
-  raw <- glue::glue(..., .envir = .envir, .transformer = tf)
+  raw <- glue::glue(..., .envir = .envir, .transformer = tf, .comment = "")
   post_process_plurals(raw, values)
 }

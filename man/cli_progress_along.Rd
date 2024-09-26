@@ -37,12 +37,16 @@ progress bar. It uses \code{\link[=cli_progress_bar]{cli_progress_bar()}} intern
 \details{
 \subsection{\code{for} loop}{
 
-A \code{for} loop with \code{cli_progress_along()} looks like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{for (i in cli_progress_along(seq)) \{
+A \code{for} loop with \code{cli_progress_along()} looks like this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{for (i in cli_progress_along(seq)) \{
   ...
 \}
 }\if{html}{\out{</div>}}
 
-A complete example:\if{html}{\out{<div class="sourceCode r">}}\preformatted{clifun <- function() \{
+A complete example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{clifun <- function() \{
   for (i in cli_progress_along(1:100, "Downloading")) \{
      Sys.sleep(4/100)
   \}
@@ -55,10 +59,14 @@ clifun()
 
 \subsection{\code{lapply()} and other mapping functions}{
 
-They will look like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{lapply(cli_progress_along(X), function(i) ...)
+They will look like this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{lapply(cli_progress_along(X), function(i) ...)
 }\if{html}{\out{</div>}}
 
-A complete example:\if{html}{\out{<div class="sourceCode r">}}\preformatted{res <- lapply(cli_progress_along(1:100, "Downloading"), function(i) \{
+A complete example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{res <- lapply(cli_progress_along(1:100, "Downloading"), function(i) \{
   Sys.sleep(4/100)
 \})
 }\if{html}{\out{</div>}}
@@ -66,7 +74,9 @@ A complete example:\if{html}{\out{<div class="sourceCode r">}}\preformatted{res 
 \if{html}{\figure{progress-along-2.svg}}
 }
 
-\subsection{Custom format string}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{clifun <- function() \{
+\subsection{Custom format string}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{clifun <- function() \{
   for (i in cli_progress_along(1:100,
       format = "Downloading data file \{cli::pb_current\}")) \{
      Sys.sleep(4/100)
@@ -82,7 +92,9 @@ clifun()
 
 Note that if you use \code{break} in the \code{for} loop, you probably want to
 terminate the progress bar explicitly when breaking out of the loop,
-or right after the loop:\if{html}{\out{<div class="sourceCode r">}}\preformatted{for (i in cli_progress_along(seq)) \{
+or right after the loop:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{for (i in cli_progress_along(seq)) \{
   ...
   if (cond) cli_progress_done() && break
   ...
@@ -91,5 +103,42 @@ or right after the loop:\if{html}{\out{<div class="sourceCode r">}}\preformatted
 }
 }
 \seealso{
+This function supports \link[=inline-markup]{inline markup}.
+
 \code{\link[=cli_progress_bar]{cli_progress_bar()}} and the traditional progress bar API.
+
+Other progress bar functions: 
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_builtin_handlers}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_num}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_progress_styles}()},
+\code{\link{progress-variables}}
+
+Other functions supporting inline markup: 
+\code{\link{cli_abort}()},
+\code{\link{cli_alert}()},
+\code{\link{cli_blockquote}()},
+\code{\link{cli_bullets_raw}()},
+\code{\link{cli_bullets}()},
+\code{\link{cli_dl}()},
+\code{\link{cli_h1}()},
+\code{\link{cli_li}()},
+\code{\link{cli_ol}()},
+\code{\link{cli_process_start}()},
+\code{\link{cli_progress_bar}()},
+\code{\link{cli_progress_message}()},
+\code{\link{cli_progress_output}()},
+\code{\link{cli_progress_step}()},
+\code{\link{cli_rule}},
+\code{\link{cli_status_update}()},
+\code{\link{cli_status}()},
+\code{\link{cli_text}()},
+\code{\link{cli_ul}()},
+\code{\link{format_error}()},
+\code{\link{format_inline}()}
 }
+\concept{functions supporting inline markup}
+\concept{progress bar functions}

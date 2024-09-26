@@ -28,8 +28,10 @@ rstudio_r_fix <- 0
 
 .onLoad <- function(libname, pkgname) {
 
+  err$onload_hook()
+
   # Try to restore cursor as much as we can
-  if (isatty(stdout())) {
+  if (Sys.getenv("R_CLI_HIDE_CURSOR") != "false" && isatty(stdout())) {
     reg.finalizer(clienv, function(e) cli::ansi_show_cursor(), TRUE)
     task_callback <<- addTaskCallback(
       function(...) { cli::ansi_show_cursor(); TRUE },
@@ -86,11 +88,7 @@ rstudio_r_fix <- 0
       opt <- getOption("cli.unicode",  NULL)
       if (!is.null(opt)) {
         if (isTRUE(opt)) {
-          if (rstudio$is_rstudio()) {
-            return(symbol_rstudio)
-          } else {
-            return(symbol_utf8)
-          }
+          return(symbol_utf8)
         } else {
           return(symbol_ascii)
         }
@@ -99,16 +97,10 @@ rstudio_r_fix <- 0
       ## Otherwise we try to auto-detect
       rst <- rstudio$detect()$type
       rok <- c("rstudio_console", "rstudio_console_starting")
-      if (is_utf8_output() && rstudio$is_rstudio()) {
-        symbol_rstudio
-      } else if (is_utf8_output()) {
+      if (is_utf8_output()) {
         symbol_utf8
       } else if (is_latex_output()) {
         symbol_ascii
-      } else if (is_windows() && .Platform$GUI == "Rgui") {
-        symbol_win
-      } else if (is_windows() && rst %in% rok) {
-        symbol_win
       } else {
         symbol_ascii
       }

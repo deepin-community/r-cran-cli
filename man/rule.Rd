@@ -54,10 +54,15 @@ To color the line, either these functions directly, or the \code{line_col}
 option.
 }
 \details{
-\subsection{Simple rule}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule()
-}\if{html}{\out{</div>}}
+\subsection{Simple rule}{
 
-\if{html}{\figure{rule-simple.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule()
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ──────────────────────────────────────────────────────────────────────          
+</pre></div>
+}}
+
 }
 
 \subsection{Line styles}{
@@ -68,57 +73,103 @@ Some strings for the \code{line} argument are interpreted specially:
 \item \code{"double"}: (same as \code{2}), a double line,
 \item \code{"bar1"}, \code{"bar2"}, \code{"bar3"}, etc., \code{"bar8"} uses varying height bars.
 }
-\subsection{Double rule}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(line = 2)
-}\if{html}{\out{</div>}}
+\subsection{Double rule}{
 
-\if{html}{\figure{rule-double.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(line = 2)
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ══════════════════════════════════════════════════════════════════════          
+</pre></div>
+}}
+
 }
 
-\subsection{Bars}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(line = "bar2")
+\subsection{Bars}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(line = "bar2")
 rule(line = "bar5")
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂          
+#> ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅          
+</pre></div>
+}}
 
-\if{html}{\figure{rule-bars.svg}}
 }
 
-\subsection{Custom lines}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = "TITLE", line = "~")
-}\if{html}{\out{</div>}}
+\subsection{Custom lines}{
 
-\if{html}{\figure{rule-custom-line.svg}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = "TITLE", line = col_blue("~-"))
-}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = "TITLE", line = "~")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TITLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~          
+</pre></div>
+}}
 
-\if{html}{\figure{rule-custom-line-2.svg}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = bg_red(" ", symbol$star, "TITLE",
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = "TITLE", line = col_blue("~-"))
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #268BD2;">~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-</span> TITLE <span style="color: #268BD2;">~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~</span>          
+</pre></div>
+}}
+
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = bg_red(" ", symbol$star, "TITLE",
   symbol$star, " "),
   line = "\\u2582",
   line_col = "orange")
-}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #ff9900;">▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂</span> <span style="background-color: #DC322F;"> ★TITLE★ </span> <span style="color: #ff9900;">▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂</span>          
+</pre></div>
+}}
 
-\if{html}{\figure{rule-custom-line-3.svg}}
 }
 
 }
 
-\subsection{Left label}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(left = "Results")
-}\if{html}{\out{</div>}}
+\subsection{Left label}{
 
-\if{html}{\figure{rule-left-label.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(left = "Results")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ── Results ───────────────────────────────────────────────────────────          
+</pre></div>
+}}
+
 }
 
-\subsection{Centered label}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = " * RESULTS * ")
-}\if{html}{\out{</div>}}
+\subsection{Centered label}{
 
-\if{html}{\figure{rule-center-label.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = " * RESULTS * ")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ────────────────────────────  * RESULTS *  ───────────────────────────          
+</pre></div>
+}}
+
 }
 
-\subsection{Colored labels}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = col_red(" * RESULTS * "))
-}\if{html}{\out{</div>}}
+\subsection{Colored labels}{
 
-\if{html}{\figure{rule-colored-label.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = col_red(" * RESULTS * "))
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> ──────────────────────────── <span style="color: #DC322F;"> * RESULTS * </span> ───────────────────────────          
+</pre></div>
+}}
+
 }
 
-\subsection{Colored line}{\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = col_red(" * RESULTS * "), line_col = "red")
-}\if{html}{\out{</div>}}
+\subsection{Colored line}{
 
-\if{html}{\figure{rule-colored-line.svg}}
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rule(center = col_red(" * RESULTS * "), line_col = "red")
+}\if{html}{\out{</div>}}\if{html}{\out{
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> <span style="color: #DC322F;">────────────────────────────</span> <span style="color: #DC322F;"> * RESULTS * </span> <span style="color: #DC322F;">───────────────────────────</span>          
+</pre></div>
+}}
+
 }
 }
